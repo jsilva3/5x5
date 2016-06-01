@@ -18,3 +18,7 @@
 .md-padding {
   padding: 5px;
 }
+md-chip.ng-scope._played {
+      background: #2196F3!important;
+      color: white !important;
+}

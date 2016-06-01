@@ -11,20 +11,43 @@ angular.module('myApp.home', ['ngRoute','ngMaterial'])
     });
 }])
 
- 
+.directive('myChip', function(){
+  return {
+    restrict: 'EA',
+    link: function(scope, elem, attrs) {
+      var myChip = elem.parent().parent();
+      myChip.addClass('_played');
+      
+      scope.$watch(function(){
+        return scope.$chip.played
+      }, function(newVal){
+        if (newVal) {
+          myChip.addClass('_played');
+          console.log('add class active');
+        } else {
+          myChip.removeClass('_played');
+          console.log('remove class active');
+        }
+      })
+      
+    }
+  };
+})
 // Home controller
 .controller('HomeCtrl', DemoCtrl); 
 
 function DemoCtrl ($timeout, $q, $log, $scope) {
+
     $scope.imagePath = 'img/cardHeader.jpg';
     var self = this;
-    
+    self.readonly = false;
+    self.removable = true;
     self.songPicks = this;
     self.songPicks.picks = [
       {text:"Sand", played:true},
       {text:"Birds of a Feather", played:false},
     ];
-
+//picks
     self.songPicks.picks2 = [
       {text:"DWD", played:false},
       {text:"Rift", played:true},
@@ -32,14 +55,16 @@ function DemoCtrl ($timeout, $q, $log, $scope) {
     
     self.addPick = addPick;
     function addPick(pick) {
+      if (pick && self.songPicks.picks.length <= 4) {
       self.songPicks.picks.push({text:pick, done:false});
+      };
       self.clear();
     };
     
     self.clear = function() {
       self.searchText = '';
     };
-    
+//autocomplete     
     self.simulateQuery = false;
     self.isDisabled    = false;
     // list of `state` value/display objects

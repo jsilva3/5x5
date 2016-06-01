@@ -28,7 +28,7 @@
       <md-content class="md-padding">
         <section layout="vertical" layout-align="center center">
         <div layout="row" flex>
-        <div flex="65">
+        <div flex="60">
           <md-card> 
             <md-card-header class="md-hue-1">
             </md-card-header>
@@ -37,7 +37,7 @@
   
            <form ng-submit="$event.preventDefault()">
             <p align ="left" >What songs will be played tonight?</p>
-            <md-autocomplete
+            <md-autocomplete 
               ng-disabled="ctrl.isDisabled"
               md-no-cache="ctrl.noCache"
               md-selected-item="ctrl.selectedItem"
@@ -56,7 +56,7 @@
               <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
             </md-not-found>
           </md-autocomplete>
-          <md-button class="md-raised md-primary" type="submit" value="add" ng-click="ctrl.addPick(ctrl.selectedItem.value)">Add to List</md-button>
+          <md-button class="md-raised md-primary" type="submit" value="add" ng-click="ctrl.addPick(ctrl.selectedItem.display)">Add to List</md-button>
       
           <br/>
       <!--<md-checkbox ng-model="ctrl.simulateQuery">Simulate query for results?</md-checkbox>
@@ -68,31 +68,31 @@
         </md-card-content>
       </md-card>
     </div>
-    <div flex="35" layout-align="center">
+    <div flex="40" layout-align="center">
       <md-card>
         <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
-        My Picks
+        My Picks (0/ {{ctrl.songPicks.picks.length}})
         </md-card-header>  
         <md-card-content class ="md-caption">
-          <ul class="unstyled">
-            <li ng-repeat="pick in ctrl.songPicks.picks">
-              <input type="checkbox" ng-model="pick.played">
-              <span>{{pick.text}}</span>
-            </li>
-          </ul>
+          <md-chips ng-model="ctrl.songPicks.picks" readonly="ctrl.readonly">
+           <input disabled />
+            <md-chip-template ng-class="{'played': $chip.played}" my-chip>
+            <em>{{$chip.text}}</em>
+            </md-chip-template>
+          </md-chips>
         </md-card-content>
       </md-card>
       <md-card>
         <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
-        Player 2 Picks
+        Player 2 Picks (0/ {{ctrl.songPicks.picks2.length}})
         </md-card-header>  
         <md-card-content class ="md-caption">
-          <ul class="unstyled">
-            <li ng-repeat="pick in ctrl.songPicks.picks2">
-              <input type="checkbox" ng-model="pick.played">
-              <span>{{pick.text}}</span>
-            </li>
-          </ul>
+          <md-chips ng-model="ctrl.songPicks.picks2" readonly="ctrl.readonly">
+           <input disabled />
+            <md-chip-template ng-class="{'played': $chip.played}" my-chip>
+            <em>{{$chip.text}}</em>
+            </md-chip-template>
+          </md-chips>
         </md-card-content>
       </md-card>
      </div>
