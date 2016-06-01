@@ -18,16 +18,26 @@ angular.module('myApp.home', ['ngRoute','ngMaterial'])
 function DemoCtrl ($timeout, $q, $log, $scope) {
     $scope.imagePath = 'img/cardHeader.jpg';
     var self = this;
+    
     self.songPicks = this;
     self.songPicks.picks = [
       {text:"Sand", played:true},
       {text:"Birds of a Feather", played:false},
     ];
-    self.addPick = addPick;
+
+    self.songPicks.picks2 = [
+      {text:"DWD", played:false},
+      {text:"Rift", played:true},
+    ];
     
+    self.addPick = addPick;
     function addPick(pick) {
       self.songPicks.picks.push({text:pick, done:false});
-      self.songPicks.songPick ='';
+      self.clear();
+    };
+    
+    self.clear = function() {
+      self.searchText = '';
     };
     
     self.simulateQuery = false;

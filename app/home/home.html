@@ -71,11 +71,24 @@
     <div flex="35" layout-align="center">
       <md-card>
         <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
-        Picks
+        My Picks
         </md-card-header>  
         <md-card-content class ="md-caption">
           <ul class="unstyled">
             <li ng-repeat="pick in ctrl.songPicks.picks">
+              <input type="checkbox" ng-model="pick.played">
+              <span>{{pick.text}}</span>
+            </li>
+          </ul>
+        </md-card-content>
+      </md-card>
+      <md-card>
+        <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
+        Player 2 Picks
+        </md-card-header>  
+        <md-card-content class ="md-caption">
+          <ul class="unstyled">
+            <li ng-repeat="pick in ctrl.songPicks.picks2">
               <input type="checkbox" ng-model="pick.played">
               <span>{{pick.text}}</span>
             </li>
