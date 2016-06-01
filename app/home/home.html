@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-       <link rel="stylesheet" href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.0-rc4/angular-material.css">
+    <link rel="stylesheet" href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.0-rc4/angular-material.css">
    
     
    
@@ -56,9 +56,9 @@
               <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
             </md-not-found>
           </md-autocomplete>
-          <md-button class="md-raised md-primary">Add to List</md-button>
+          <md-button class="md-raised md-primary" type="submit" value="add" ng-click="ctrl.addPick(ctrl.selectedItem.value)">Add to List</md-button>
       
-      <br/>
+          <br/>
       <!--<md-checkbox ng-model="ctrl.simulateQuery">Simulate query for results?</md-checkbox>
       <md-checkbox ng-model="ctrl.noCache">Disable caching of queries?</md-checkbox>
       <md-checkbox ng-model="ctrl.isDisabled">Disable the input?</md-checkbox>
@@ -74,16 +74,12 @@
         Picks
         </md-card-header>  
         <md-card-content class ="md-caption">
-       <p>
-        1. Bathtub Gin
-        <p>
-        2. PYITE
-        <p>
-        3. Sand
-        <p>
-        4. Tweezer
-        <p>
-        5. Drowned
+          <ul class="unstyled">
+            <li ng-repeat="pick in ctrl.songPicks.picks">
+              <input type="checkbox" ng-model="pick.played">
+              <span>{{pick.text}}</span>
+            </li>
+          </ul>
         </md-card-content>
       </md-card>
      </div>

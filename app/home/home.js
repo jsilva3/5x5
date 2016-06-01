@@ -1,8 +1,6 @@
 (function () {
   'use strict';
 
-
- 
 angular.module('myApp.home', ['ngRoute','ngMaterial'])
  
 // Declared route 
@@ -20,6 +18,17 @@ angular.module('myApp.home', ['ngRoute','ngMaterial'])
 function DemoCtrl ($timeout, $q, $log, $scope) {
     $scope.imagePath = 'img/cardHeader.jpg';
     var self = this;
+    self.songPicks = this;
+    self.songPicks.picks = [
+      {text:"Sand", played:true},
+      {text:"Birds of a Feather", played:false},
+    ];
+    self.addPick = addPick;
+    
+    function addPick(pick) {
+      self.songPicks.picks.push({text:pick, done:false});
+      self.songPicks.songPick ='';
+    };
     
     self.simulateQuery = false;
     self.isDisabled    = false;
@@ -77,6 +86,10 @@ function DemoCtrl ($timeout, $q, $log, $scope) {
         return (state.value.indexOf(lowercaseQuery) === 0);
       };
     }
+    
+    
+    
+    
   }
 
 })();
