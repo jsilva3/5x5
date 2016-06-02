@@ -1,8 +1,8 @@
 {
-  "name": "angular-seed",
-  "description": "A starter project for AngularJS",
+  "name": "5x5",
+  "description": "my starter poject based on angular-seed",
   "version": "0.0.0",
-  "homepage": "https://github.com/angular/angular-seed",
+  "homepage": "",
   "license": "MIT",
   "private": true,
   "dependencies": {
@@ -13,10 +13,12 @@
     "html5-boilerplate": "^5.3.0",
     "angular-animate": "^1.4.8",
     "angular-aria": "^1.4.8",
-    "angular-messages": "^1.4.8"
+    "angular-messages": "^1.4.8",
+    "firebase": "3.x.x"
   },
   "main": [
     "angular-material.js",
     "angular-material.css"
+
   ]
 }

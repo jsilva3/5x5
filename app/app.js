@@ -4,6 +4,7 @@ angular.module('myApp', [
     'ngRoute',
     'ngMaterial',
     'ngMessages',
+    'firebase',
     'myApp.home'           // Newly added home module
 ]).
 config(['$routeProvider', function($routeProvider) {
@@ -15,9 +16,10 @@ config(['$routeProvider', function($routeProvider) {
 
 }])
 .config(function($mdThemingProvider) {
-  $mdThemingProvider.theme('default')
-    .primaryPalette('blue')
-    .accentPalette('deep-orange');
+   $mdThemingProvider.theme('default')
+    .primaryPalette('indigo')
+    .accentPalette('teal');
+
 });
  
 

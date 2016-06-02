@@ -36,7 +36,7 @@
             <md-card-content>
 
            <form ng-submit="$event.preventDefault()">
-            <p align ="center" class="md-title title1">What songs will be played tonight?</p>
+            <p align ="center" class="md-title title1" ng-model="data.text">What songs will be played tonight? {{ data.text }}</p>
             <div layout="row" layout-align="center end" flex>
             <div flex="80">
             <md-autocomplete 
