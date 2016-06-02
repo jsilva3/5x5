@@ -73,7 +73,19 @@ function DemoCtrl ($timeout, $q, $log, $scope) {
     self.clear = function() {
       self.searchText = '';
     };
-//autocomplete     
+//firebase
+
+function createNewGame() {
+
+ var newGameKey = firebase.database().ref().push().key;
+  firebase.database().ref('games/' + newGameKey).set({
+    desc: "my new game",
+    date: "20160601"
+  });
+}
+
+//autocomplete    
+
     self.simulateQuery = false;
     self.isDisabled    = false;
     // list of `state` value/display objects
