@@ -38,7 +38,7 @@ angular.module('myApp.home', ['ngRoute','ngMaterial'])
 
 function DemoCtrl ($timeout, $q, $log, $scope) {
 
-    $scope.imagePath = 'img/cardHeader.jpg';
+    $scope.imagePath = 'img/cardHeader3.jpg';
     var self = this;
     self.readonly = false;
     self.removable = true;
@@ -46,6 +46,7 @@ function DemoCtrl ($timeout, $q, $log, $scope) {
     self.songPicks.picks = [
       {text:"Sand", played:true},
       {text:"Birds of a Feather", played:false},
+      {text:"Sample", played:true}
     ];
 //picks
     self.songPicks.picks2 = [
@@ -53,12 +54,20 @@ function DemoCtrl ($timeout, $q, $log, $scope) {
       {text:"Rift", played:true},
     ];
     
-    self.addPick = addPick;
+    self.songPicks.addPick = addPick;
     function addPick(pick) {
       if (pick && self.songPicks.picks.length <= 4) {
       self.songPicks.picks.push({text:pick, done:false});
       };
       self.clear();
+    };
+    self.songPicks.score = score;
+    function score(picks){
+      var count =0;
+      angular.forEach(picks, function(pick){
+        count += pick.played ? 1 : 0;
+      });
+      return count;
     };
     
     self.clear = function() {
