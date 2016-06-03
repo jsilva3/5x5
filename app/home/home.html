@@ -36,7 +36,7 @@
             <md-card-content>
 
            <form ng-submit="$event.preventDefault()">
-            <p align ="center" class="md-title title1" ng-model="data.text">What songs will be played tonight? {{ data.text }}</p>
+            <p align ="center" class="md-title title1" >What songs will be played tonight?</p>
             <div layout="row" layout-align="center end" flex>
             <div flex="80">
             <md-autocomplete 
@@ -79,7 +79,7 @@
         My Picks ({{ctrl.songPicks.score(ctrl.songPicks.picks)}}/ {{ctrl.songPicks.picks.length}})
         </md-card-header>  
         <md-card-content class ="md-caption">
-          <md-chips  ng-model="ctrl.songPicks.picks" readonly="ctrl.readonly">
+          <md-chips  ng-repeat="song in songsFire" readonly="ctrl.readonly" md-on-remove="ctrl.removeChipFire($chip, $index)">
            <input disabled />
             <md-chip-template ng-class="{'played': $chip.played}" my-chip>
             <em>{{$chip.text}}</em>

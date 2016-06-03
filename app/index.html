@@ -25,14 +25,14 @@
    };
     firebase.initializeApp(config);
     var auth = firebase.auth();
-    auth.signInAnonymously().then(function(result) {
-      // User signed in!
-      var uid = result.User.uid;
-      console.log("hi");
-    }).catch(function(error) {
-      // An error occurred
-      console.log("no");
-    });
+ if (!auth){
+    firebase.auth().signInAnonymously().catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // ...
+})};
+
 
   </script>
   <script src="bower_components/angular/angular.js"></script>

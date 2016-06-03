@@ -36,8 +36,9 @@ angular.module('myApp.home', ['ngRoute','ngMaterial'])
 // Home controller
 .controller('HomeCtrl', DemoCtrl); 
 
-function DemoCtrl ($timeout, $q, $log, $scope, $firebaseObject) {
+function DemoCtrl ($timeout, $q, $log, $scope, $firebaseObject, $firebaseArray) {
     var game = "KJH7QtFE0u9IjxfNbez";
+    $scope.uid = "123";
     $scope.imagePath = "img/cardHeader3.jpg";
     var self = this;
     self.readonly = false;
@@ -59,6 +60,8 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseObject) {
       if (pick && self.songPicks.picks.length <= 4) {
       self.songPicks.picks.push({text:pick, done:false});
       //createNewGame();
+      addSongFire(pick, $scope.uid);
+      
       };
       self.clear();
     };
@@ -72,25 +75,73 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseObject) {
     };
     
     self.clear = function() {
-      self.searchText = '';
+      self.searchText = "";
     };
 //firebase
-  var ref = firebase.database().ref().child("data");
-  // download the data into a local object
-  var syncObject = $firebaseObject(ref);
-  // synchronize the object with a three-way data binding
-  // click on `index.html` above to see it used in the DOM!
-  syncObject.$bindTo($scope, "data");
 
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+    
+    var isAnonymous = user.isAnonymous;
+    $scope.uid = user.uid;
+    console.log("user is signed in " + JSON.stringify($scope.uid) )
+    bindSongs($scope.uid)
+    // ...
+  } else {
+     console.log("user is not signed in")
+    // User is signed out.
+    // ...
+  }  // ...
+});
+self.bindSongs = bindSongs;
+  function bindSongs(uid){
+    var ref = firebase.database().ref("picks");
+      ref.orderByChild("uid").equalTo("c9mOyxED77UOqAI1Vn5aj4lAAHF3").on("child_added", function(snapshot) {
+      $scope.songsFire  = snapshot.val();
+      console.log(snapshot.val());
+});
+  // var ref = firebase.database().ref("picks");
+  // $scope.songsFire  = $firebaseArray(ref);
+  // console.log ($scope.songsFire)
 
+};
+//for new game logic
 function createNewGame() {
-
+  
  var newGameKey = firebase.database().ref().push().key;
-  firebase.database().ref('games/' + newGameKey).set({
+  firebase.database().ref('users/' + uid).set({
     desc: "my new game",
     date: "20160601"
   });
 }
+self.removeChipFire = removeChipFire;
+    function removeChipFire(chip,index) {
+      console.log(chip, index);
+      var ref = firebase.database().ref("games/" + game + "/" + $scope.uid + "/" + chip.$id);
+        ref.remove()
+          .then(function() {
+        console.log("Remove succeeded.")
+        })
+        .catch(function(error) {
+        console.log("Remove failed: " + error.message)
+        });
+    };
+self.addSongFire = addSongFire;
+    function addSongFire(pick, uid1) {
+      console.log(pick, uid1);
+      var newPostKey = firebase.database().ref().child('games').push().key;
+      var addData = {
+                uid: uid1,
+                gameid: game,
+                song: pick
+                
+              };
+      var updates = {};
+      updates["/picks/" + newPostKey] = addData;
+      return firebase.database().ref().update(updates);
+        
+    };
 
 //autocomplete    
 
