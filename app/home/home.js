@@ -6,8 +6,8 @@ angular.module('myApp.home', ['ngRoute','ngMaterial'])
 // Declared route 
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/home', {
-        templateUrl: 'home/home.html',
-        controller: 'HomeCtrl'
+        templateUrl: 'home/home.html'
+        
     });
 }])
 
@@ -57,7 +57,7 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseObject, $firebaseArray) 
     
     self.songPicks.addPick = addPick;
     function addPick(pick) {
-      if (pick && self.songPicks.picks.length <= 4) {
+      if (pick && self.songPicks.picks.length <= 10) {
       self.songPicks.picks.push({text:pick, done:false});
       //createNewGame();
       addSongFire(pick, $scope.uid);
@@ -96,10 +96,18 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 self.bindSongs = bindSongs;
   function bindSongs(uid){
+    var songs1 = [];
     var ref = firebase.database().ref("picks");
-      ref.orderByChild("uid").equalTo("c9mOyxED77UOqAI1Vn5aj4lAAHF3").on("child_added", function(snapshot) {
-      $scope.songsFire  = snapshot.val();
-      console.log(snapshot.val());
+      ref.orderByChild("uid").equalTo(uid).on("child_added", function(snapshot) {
+      //$scope.songsFire  = snapshot.val();
+      //songs1.push(snapshot.val().song);
+      var songadd = {};
+      songadd = {
+        song:snapshot.val().song
+      };
+      songs1.push(songadd);
+      $scope.songsFire = songs1;
+      //console.log($scope.songsFire);
 });
   // var ref = firebase.database().ref("picks");
   // $scope.songsFire  = $firebaseArray(ref);
@@ -117,22 +125,32 @@ function createNewGame() {
 }
 self.removeChipFire = removeChipFire;
     function removeChipFire(chip,index) {
+      var removeKey;
       console.log(chip, index);
-      var ref = firebase.database().ref("games/" + game + "/" + $scope.uid + "/" + chip.$id);
-        ref.remove()
+      var ref = firebase.database().ref("picks");
+      ref.orderByChild("uid").equalTo($scope.uid).on("child_added", function(snapshot) {
+      if (snapshot.val().song == chip.song) {  
+        removeKey = snapshot.key;
+      //console.log(snapshot.key);
+      };
+      //console.log(snapshot.val().song);
+      //console.log(chip.song);
+    });
+      var ref = firebase.database().ref("picks/" + removeKey);
+       ref.remove()
           .then(function() {
         console.log("Remove succeeded.")
-        })
+       })
         .catch(function(error) {
         console.log("Remove failed: " + error.message)
-        });
+       });
     };
 self.addSongFire = addSongFire;
-    function addSongFire(pick, uid1) {
-      console.log(pick, uid1);
+    function addSongFire(pick, uid) {
+      console.log(pick, uid);
       var newPostKey = firebase.database().ref().child('games').push().key;
       var addData = {
-                uid: uid1,
+                uid: uid,
                 gameid: game,
                 song: pick
                 
