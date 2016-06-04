@@ -54,15 +54,27 @@ function DemoCtrl ($timeout, $q, $log, $scope, Profile) {
     var game = "KJH7QtFE0u9IjxfNbez";
     $scope.imagePath = "img/cardHeader3.jpg";
     var self = this;
+
     self.readonly = false;
     self.removable = true;
     self.songPicks = this;
 //picks player 2
     self.songPicks.picks2 = [
-      {text:"DWD", played:false},
-      {text:"Rift", played:true},
+      {song:"DWD", played:false},
+      {song:"Rift", played:true},
+      {song:"Ghost", played:true}
     ];
-    
+//picks player 3
+    self.songPicks.picks3 = [
+      {song:"You Enjoy Myself", played:false},
+      {song:"Harry Hood", played:false},
+    ];
+    $scope.players = [
+      {name:"Joe", picks:self.songPicks.picks2},
+      {name:"Bob", picks:self.songPicks.picks3}
+      
+    ];
+    console.log ($scope.players)
     self.songPicks.addPick = addPick;
     function addPick(pick) {
       if (pick) {
@@ -114,10 +126,14 @@ self.removeChipFire = removeChipFire;
       var removeKey;
       console.log(chip, index);
       var ref = firebase.database().ref("picks");
-      ref.orderByChild("uid").equalTo($scope.uid).on("child_added", function(snapshot) {
+      ref
+        .orderByChild("gameid")
+        .startAt(game).endAt(game)
+        .equalTo($scope.uid)
+        .on("child_changed", function(snapshot) {
       if (snapshot.val().song == chip.song) {  
         removeKey = snapshot.key;
-      };
+        };
       });
       var ref = firebase.database().ref("picks/" + removeKey);
        ref.remove()
@@ -136,7 +152,8 @@ self.addSongFire = addSongFire;
                 uid: uid,
                 gameid: game,
                 song: pick,
-                played: true
+                played: !!Math.floor(Math.random() * 2),
+                timestamp: Date.now()
                 
               };
       var updates = {};

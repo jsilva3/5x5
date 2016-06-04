@@ -88,15 +88,15 @@
           </md-chips>
         </md-card-content>
       </md-card>
-      <md-card>
+      <md-card ng-repeat="item in players">
         <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
-        Player 2 Picks ({{ctrl.songPicks.score(ctrl.songPicks.picks2)}}/{{ctrl.songPicks.picks2.length}})
+        {{item.name}} ({{ctrl.songPicks.score(ctrl.songPicks.picks2)}}/{{ctrl.songPicks.picks2.length}})
         </md-card-header>  
         <md-card-content class ="md-caption">
-          <md-chips ng-model="ctrl.songPicks.picks2" readonly="ctrl.readonly">
+          <md-chips ng-model="item.picks" readonly=true>
            <input disabled />
             <md-chip-template ng-class="{'played': $chip.played}" my-chip>
-            <em>{{$chip.text}}</em>
+            <em>{{$chip.song}}</em>
             </md-chip-template>
           </md-chips>
         </md-card-content>
