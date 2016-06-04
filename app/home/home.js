@@ -70,7 +70,7 @@ function DemoCtrl ($timeout, $q, $log, $scope, Profile) {
       //createNewGame();
       addSongFire(pick, $scope.uid);
       };
-      self.clear();
+     self.clear();
     };
     self.songPicks.score = score;
     function score(picks){
