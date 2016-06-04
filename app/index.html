@@ -25,18 +25,20 @@
    };
     firebase.initializeApp(config);
     var auth = firebase.auth();
-    
-
- if (!auth){
-   var authclient = firebase.auth().signInAnonymously().catch(function(error) {
-     
-  // Handle Errors here.
-  var errorCode = error.code;
-  var errorMessage = error.message;
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        // User signed in!
+      var uid = user.uid;
+     } else {
+      var authclient = firebase.auth().signInAnonymously().catch(function(error) {
+        // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
   // ...
-})};
-
-
+      })
+        // User logged out
+      }
+    });
   </script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>

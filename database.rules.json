@@ -1,7 +1,7 @@
 {
   ".read": true,
   ".write": true,
-    "pciks": {
+    "picks": {
       ".indexOn": "uid"
     }
 }

@@ -212,7 +212,6 @@ firebase.auth().onAuthStateChanged(function(user) {
     $scope.uid = user.uid;
     console.log("user is signed in " + JSON.stringify($scope.uid) );
     bindSongs($scope.uid);
-    $scope.querySearch ="";
     // ...
   } else {
      console.log("user is not signed in")
@@ -220,12 +219,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     // ...
   }  // ...
 });
-  
-};   
-    
-    
-    
-  }
-
+};  
+}
 })();
  
