@@ -18,7 +18,7 @@
 </head>
  
 <body>
-<div ng-controller="HomeCtrl as ctrl" ng-cloak>
+<div ng-controller="HomeCtrl as ctrl" data-ng-init="init()" ng-cloak>
     <md-toolbar>
     <div class="md-toolbar-tools md-hue-2" md-scroll-shrink flex layout-align="center center">
       <h3>Phish | 5 for 5</h3>
@@ -76,7 +76,7 @@
     <div>
       <md-card>
         <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
-        My Picks ({{ctrl.songPicks.score(ctrl.songPicks.picks)}}/ {{ctrl.songPicks.picks.length}})
+        My Picks ({{ctrl.songPicks.score(songsFire)}}/{{songsFire.length}})
         </md-card-header>  
         <md-card-content class ="md-caption">
           <md-chips ng-model="songsFire" readonly="ctrl.readonly" md-on-remove="ctrl.removeChipFire($chip, $index)">

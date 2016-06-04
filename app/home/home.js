@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-angular.module('myApp.home', ['ngRoute','ngMaterial'])
+angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
  
 // Declared route 
 .config(['$routeProvider', function($routeProvider) {
@@ -33,23 +33,31 @@ angular.module('myApp.home', ['ngRoute','ngMaterial'])
     }
   };
 })
+.factory("Profile", ["$firebaseObject",
+  function($firebaseObject) {
+    return function(gameid) {
+      // create a reference to the database where we will store our data
+      //var randomRoomId = Math.round(Math.random() * 100000000);
+      var ref = firebase.database().ref("picks");
+      var profileRef = ref.child(gameid);
+
+      // return it as a synchronized object
+      return $firebaseObject(profileRef);
+    };
+  }
+])
+
 // Home controller
 .controller('HomeCtrl', DemoCtrl); 
 
-function DemoCtrl ($timeout, $q, $log, $scope, $firebaseObject, $firebaseArray) {
+function DemoCtrl ($timeout, $q, $log, $scope, Profile) {
     var game = "KJH7QtFE0u9IjxfNbez";
-    $scope.uid = "123";
     $scope.imagePath = "img/cardHeader3.jpg";
     var self = this;
     self.readonly = false;
     self.removable = true;
     self.songPicks = this;
-    self.songPicks.picks = [
-      {text:"Sand", played:true},
-      {text:"Birds of a Feather", played:false},
-      {text:"Sample", played:true}
-    ];
-//picks
+//picks player 2
     self.songPicks.picks2 = [
       {text:"DWD", played:false},
       {text:"Rift", played:true},
@@ -57,11 +65,10 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseObject, $firebaseArray) 
     
     self.songPicks.addPick = addPick;
     function addPick(pick) {
-      if (pick && self.songPicks.picks.length <= 10) {
-      self.songPicks.picks.push({text:pick, done:false});
+      if (pick) {
+      //self.songPicks.picks.push({text:pick, done:false});
       //createNewGame();
       addSongFire(pick, $scope.uid);
-      
       };
       self.clear();
     };
@@ -73,47 +80,26 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseObject, $firebaseArray) 
       });
       return count;
     };
-    
     self.clear = function() {
       self.searchText = "";
     };
-//firebase
-
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    
-    var isAnonymous = user.isAnonymous;
-    $scope.uid = user.uid;
-    console.log("user is signed in " + JSON.stringify($scope.uid) )
-    bindSongs($scope.uid)
-    // ...
-  } else {
-     console.log("user is not signed in")
-    // User is signed out.
-    // ...
-  }  // ...
-});
-self.bindSongs = bindSongs;
-  function bindSongs(uid){
-    var songs1 = [];
+//self.bindSongs = bindSongs;
+ function bindSongs(uid){
+    var mysongs = [];
     var ref = firebase.database().ref("picks");
       ref.orderByChild("uid").equalTo(uid).on("child_added", function(snapshot) {
-      //$scope.songsFire  = snapshot.val();
-      //songs1.push(snapshot.val().song);
+      console.log("loaded songs");
       var songadd = {};
       songadd = {
-        song:snapshot.val().song
+        song:snapshot.val().song,
+        played:snapshot.val().played
       };
-      songs1.push(songadd);
-      $scope.songsFire = songs1;
+      mysongs.push(songadd);
+      $scope.songsFire = mysongs;
+      $scope.$evalAsync(function() { $scope.assignmentsLoaded; } );
       //console.log($scope.songsFire);
-});
-  // var ref = firebase.database().ref("picks");
-  // $scope.songsFire  = $firebaseArray(ref);
-  // console.log ($scope.songsFire)
-
-};
+  });
+  };
 //for new game logic
 function createNewGame() {
   
@@ -131,11 +117,8 @@ self.removeChipFire = removeChipFire;
       ref.orderByChild("uid").equalTo($scope.uid).on("child_added", function(snapshot) {
       if (snapshot.val().song == chip.song) {  
         removeKey = snapshot.key;
-      //console.log(snapshot.key);
       };
-      //console.log(snapshot.val().song);
-      //console.log(chip.song);
-    });
+      });
       var ref = firebase.database().ref("picks/" + removeKey);
        ref.remove()
           .then(function() {
@@ -152,14 +135,14 @@ self.addSongFire = addSongFire;
       var addData = {
                 uid: uid,
                 gameid: game,
-                song: pick
+                song: pick,
+                played: true
                 
               };
       var updates = {};
       updates["/picks/" + newPostKey] = addData;
       return firebase.database().ref().update(updates);
-        
-    };
+   };
 
 //autocomplete    
 
@@ -219,7 +202,26 @@ self.addSongFire = addSongFire;
         return (state.value.indexOf(lowercaseQuery) === 0);
       };
     }
+//init and auth    
+$scope.init = function () {
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
     
+    var isAnonymous = user.isAnonymous;
+    $scope.uid = user.uid;
+    console.log("user is signed in " + JSON.stringify($scope.uid) );
+    bindSongs($scope.uid);
+    $scope.querySearch ="";
+    // ...
+  } else {
+     console.log("user is not signed in")
+    // User is signed out.
+    // ...
+  }  // ...
+});
+  
+};   
     
     
     

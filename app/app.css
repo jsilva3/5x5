@@ -21,3 +21,6 @@ md-chip.ng-scope._played {
 .title1 {
   margin: 8px;
 }
+.md-scroll-mask {
+    position: initial
+}

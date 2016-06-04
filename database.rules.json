@@ -1,4 +1,7 @@
 {
   ".read": true,
-  ".write": true
+  ".write": true,
+    "pciks": {
+      ".indexOn": "uid"
+    }
 }
