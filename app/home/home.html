@@ -77,10 +77,10 @@
     <div>
       <md-card>
         <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
-        My Picks ({{ctrl.songPicks.score(songsFire)}}/{{songsFire.length}})
+        My Picks ({{ctrl.songPicks.score(myPicks)}}/{{myPicks.length}})
         </md-card-header>  
         <md-card-content class ="md-caption">
-          <md-chips ng-model="songsFire" readonly="ctrl.readonly" md-on-remove="ctrl.removeChipFire($chip, $index)">
+          <md-chips ng-model="myPicks" readonly="ctrl.readonly" md-on-remove="ctrl.removeChipFire($chip, $index)">
            <input disabled />
             <md-chip-template ng-class="{'played': $chip.played}" my-chip>
             <em>{{$chip.song}}</em>
@@ -90,7 +90,7 @@
       </md-card>
       <md-card ng-repeat="item in players">
         <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
-        {{item.name}} ({{ctrl.songPicks.score(ctrl.songPicks.picks2)}}/{{ctrl.songPicks.picks2.length}})
+        {{item.name}} ({{ctrl.songPicks.score(item.picks)}}/{{item.picks.length}})
         </md-card-header>  
         <md-card-content class ="md-caption">
           <md-chips ng-model="item.picks" readonly=true>

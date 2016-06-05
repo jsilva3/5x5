@@ -2,6 +2,6 @@
   ".read": true,
   ".write": true,
     "picks": {
-      ".indexOn": "uid"
+      ".indexOn": ["gameid","uid","gameanduserid"]
     }
 }
