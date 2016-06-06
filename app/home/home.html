@@ -77,7 +77,18 @@
     <div>
       <md-card>
         <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
-        My Picks ({{ctrl.songPicks.score(myPicks)}}/{{myPicks.length}})
+         <md-card-header-text>
+            <span class="md-title">
+            <div layout = 'row' layout-align="space-between end">
+            <div class="form-style-8" >
+            <input type = "text" ng-model="playerFire.name"/>
+            </div>
+            <div>
+              ({{ctrl.songPicks.score(myPicks)}}/{{myPicks.length}})
+             </div>
+            </div>
+            </span>   
+        </md-card-header-text>
         </md-card-header>  
         <md-card-content class ="md-caption">
           <md-chips ng-model="myPicks" readonly="ctrl.readonly" md-on-remove="ctrl.removeChipFire($chip, $index)">
@@ -91,7 +102,14 @@
       </md-card>
       <md-card ng-repeat="item in otherPicks">
         <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
-        {{item.name}} ({{ctrl.songPicks.score(item.picks)}}/{{item.picks.length}})
+          <md-card-header-text>
+            <span class="md-title">
+            <div layout = 'row' layout-align="space-between end">
+              <div>{{playerName.name}}</div>
+              <div> ({{ctrl.songPicks.score(item.picks)}}/{{item.picks.length}})</div>
+             </div>
+             </span>
+        </md-card-header-text>
         </md-card-header>  
         <md-card-content class ="md-caption">
           <md-chips ng-model="item.picks" readonly=true>

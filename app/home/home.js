@@ -38,7 +38,7 @@ angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
 // Home controller
 .controller('HomeCtrl', DemoCtrl); 
 
-function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray) {
+function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject) {
     var game = "KJH7QtFE0u9IjxfNbez";
     $scope.imagePath = "img/cardHeader3.jpg";
     var self = this;
@@ -93,6 +93,13 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray) {
       .equalTo(gameanduserid);
     $scope.myPicks = $firebaseArray(query);
     
+   //players
+    var allPlayersRef = firebase.database().ref("games/" + game);
+    var query7 = allPlayersRef
+      .orderByChild("player");
+    $scope.allPlayers = $firebaseArray(query7);
+    //console.log($scope.allPlayers);
+    
     //other pick
     var test = [];
     var tempPicks =[];
@@ -102,24 +109,26 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray) {
     otherPicksRef
       .on("value", function(snapshot) {
          var arr = [];
-         angular.forEach(snapshot.val(),function(pick,key){
-           if (pick.player == $scope.uid) {  
+         angular.forEach(snapshot.val(),function(player,key){           
+
+         if (player.player == $scope.uid) {  
               //todo - move my pick here
+                var playerNameref = firebase.database().ref("games/" + game + "/" + player.player)
+                var syncObject = $firebaseObject(playerNameref);
+                syncObject.$bindTo($scope, "playerFire");
              
          }else {
                 var allPicksRef = firebase.database().ref("picks/");
-                var gameanduserid = game + "_" + pick.player;
-                console.log (gameanduserid);
+                var gameanduserid = game + "_" + player.player;      
                 var query3 = allPicksRef
                 .orderByChild("gameanduserid")
-                .equalTo(gameanduserid); 
+                .equalTo(gameanduserid);
+                $scope.playerName = player;
+                //console.log($scope.allPlayers);
                 var tempObj = {};
-                tempObj = ({name:pick.player, picks:$firebaseArray(query3)});
+                tempObj = ({name: $scope.playerName, picks:$firebaseArray(query3)});
                 arr.push(tempObj);
-
-                var obj = {name:"Joe", picks:$firebaseArray(query3)};
-                obj["0"] = {picks:$firebaseArray(query3)}; 
-                 $scope.otherPicks = arr;         
+                $scope.otherPicks = arr;         
          };
          
        });
@@ -140,40 +149,18 @@ function createNewGame() {
     numPlayers: "1"
   });
 };
-//self.registerUser = registerUser(;
   function registerUser(uid) {
-    var createUser = false;
-    var playerRef = firebase.database().ref("games/" + game);
-    playerRef
-      .once("value", function(snapshot) {
-        if (snapshot.val()){
-         angular.forEach(snapshot.val(),function(pick,key){
-           
-           if (pick.player == $scope.uid ) {  
-              //todo - move my pick here
-              console.log("help")
-             createUser = "false"
-          }else {
-            console.log(pick.player + " " + $scope.uid + "else")
-            var newUserKey = firebase.database().ref().child("games").push().key;
+            //var newUserKey = firebase.database().ref().child("games").push().key;
             var obj = {};
             obj["player"] = $scope.uid;
-            //firebase.database().ref("games/" + game).set(obj);
             var updates = {};
-            updates["/games/" + game + "/" + $scope.uid] = obj;
-            return firebase.database().ref("games/" + game + "/" + $scope.uid).update(obj);
-          };
-        });
-        }else {
-            var newUserKey = firebase.database().ref().child("games").push().key;
-            var obj = {};
-            obj["player"] = $scope.uid;
-            //firebase.database().ref("games/" + game).set(obj);
-            var updates = {};
-            updates["/games/" + game + "/" + $scope.uid] = obj;
-            return firebase.database().ref("games/" + game + "/" + $scope.uid).update(obj);
-        };
-       });
+            var addData = {
+                player: $scope.uid,
+                timestamp: Date.now()  
+              };
+            return firebase.database().ref("/games/" + game + "/" + $scope.uid).update(addData);
+    
+
       };
 
 self.removeChipFire = removeChipFire;
@@ -278,8 +265,19 @@ self.addSongFire = addSongFire;
         return (state.value.indexOf(lowercaseQuery) === 0);
       };
     }
-//init and auth    
+//init and auth  
+  Array.prototype.select = function(closure){
+    for(var n = 0; n < this.length; n++) {
+        if(closure(this[n])){
+            return this[n];
+        }
+    }
+
+    return null;
+};  
 $scope.init = function () {
+
+  
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
@@ -299,4 +297,3 @@ firebase.auth().onAuthStateChanged(function(user) {
 };  
 }
 })();
- 
