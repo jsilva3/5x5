@@ -1,7 +1,10 @@
 {
   ".read": true,
   ".write": true,
-    "picks": {
+  "picks": {
       ".indexOn": ["gameid","uid","gameanduserid"]
-    }
+    },
+  "games": {
+    ".write": "!data.exists()"
+  }
 }

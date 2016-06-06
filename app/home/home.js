@@ -142,16 +142,17 @@ function createNewGame() {
 };
 //self.registerUser = registerUser(;
   function registerUser(uid) {
-    
+    var createUser = false;
     var playerRef = firebase.database().ref("games/" + game);
     playerRef
       .once("value", function(snapshot) {
         if (snapshot.val()){
          angular.forEach(snapshot.val(),function(pick,key){
-           if (pick.player == uid) {  
+           
+           if (pick.player == $scope.uid ) {  
               //todo - move my pick here
-              console.log(pick.player + " " + $scope.uid + "help")
-             
+              console.log("help")
+             createUser = "false"
           }else {
             console.log(pick.player + " " + $scope.uid + "else")
             var newUserKey = firebase.database().ref().child("games").push().key;
@@ -159,8 +160,8 @@ function createNewGame() {
             obj["player"] = $scope.uid;
             //firebase.database().ref("games/" + game).set(obj);
             var updates = {};
-            updates["/games/" + game] = obj;
-            return firebase.database().ref("games/" + game).push(obj);
+            updates["/games/" + game + "/" + $scope.uid] = obj;
+            return firebase.database().ref("games/" + game + "/" + $scope.uid).update(obj);
           };
         });
         }else {
@@ -169,8 +170,8 @@ function createNewGame() {
             obj["player"] = $scope.uid;
             //firebase.database().ref("games/" + game).set(obj);
             var updates = {};
-            updates["/games/" + game] = obj;
-            return firebase.database().ref("games/" + game).push(obj);
+            updates["/games/" + game + "/" + $scope.uid] = obj;
+            return firebase.database().ref("games/" + game + "/" + $scope.uid).update(obj);
         };
        });
       };
