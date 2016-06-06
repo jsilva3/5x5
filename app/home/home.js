@@ -23,10 +23,10 @@ angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
       }, function(newVal){
         if (newVal) {
           myChip.addClass('_played');
-          console.log('add class active');
+         // console.log('add class active');
         } else {
           myChip.removeClass('_played');
-          console.log('remove class active');
+         // console.log('remove class active');
         }
       })
       
@@ -57,12 +57,12 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray) {
       {song:"You Enjoy Myself", played:false},
       {song:"Harry Hood", played:false},
     ];
-    $scope.players = [
+    $scope.players2 = [
       {name:"Joe", picks:self.songPicks.picks2},
       {name:"Bob", picks:self.songPicks.picks3}
       
     ];
-    console.log ($scope.players)
+    //console.log ($scope.players)
     
     self.songPicks.addPick = addPick;
     function addPick(pick) {
@@ -92,7 +92,44 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray) {
       .orderByChild("gameanduserid")
       .equalTo(gameanduserid);
     $scope.myPicks = $firebaseArray(query);
-  };
+    
+    //other pick
+    var test = [];
+    var tempPicks =[];
+
+    //get unique players in a game
+    var otherPicksRef = firebase.database().ref("games/" + game);
+    otherPicksRef
+      .on("value", function(snapshot) {
+         var arr = [];
+         angular.forEach(snapshot.val(),function(pick,key){
+           if (pick.player == $scope.uid) {  
+              //todo - move my pick here
+             
+         }else {
+                var allPicksRef = firebase.database().ref("picks/");
+                var gameanduserid = game + "_" + pick.player;
+                console.log (gameanduserid);
+                var query3 = allPicksRef
+                .orderByChild("gameanduserid")
+                .equalTo(gameanduserid); 
+                var tempObj = {};
+                tempObj = ({name:pick.player, picks:$firebaseArray(query3)});
+                arr.push(tempObj);
+
+                var obj = {name:"Joe", picks:$firebaseArray(query3)};
+                obj["0"] = {picks:$firebaseArray(query3)}; 
+                 $scope.otherPicks = arr;         
+         };
+         
+       });
+
+    //console.log($scope.otherPicks);
+    //console.log($scope.players2);
+    });
+   
+ };
+  
 //for new game logic
 function createNewGame() {
   
@@ -102,7 +139,42 @@ function createNewGame() {
     showdDate: "20160601",
     numPlayers: "1"
   });
-}
+};
+//self.registerUser = registerUser(;
+  function registerUser(uid) {
+    
+    var playerRef = firebase.database().ref("games/" + game);
+    playerRef
+      .once("value", function(snapshot) {
+        if (snapshot.val()){
+         angular.forEach(snapshot.val(),function(pick,key){
+           if (pick.player == uid) {  
+              //todo - move my pick here
+              console.log(pick.player + " " + $scope.uid + "help")
+             
+          }else {
+            console.log(pick.player + " " + $scope.uid + "else")
+            var newUserKey = firebase.database().ref().child("games").push().key;
+            var obj = {};
+            obj["player"] = $scope.uid;
+            //firebase.database().ref("games/" + game).set(obj);
+            var updates = {};
+            updates["/games/" + game] = obj;
+            return firebase.database().ref("games/" + game).push(obj);
+          };
+        });
+        }else {
+            var newUserKey = firebase.database().ref().child("games").push().key;
+            var obj = {};
+            obj["player"] = $scope.uid;
+            //firebase.database().ref("games/" + game).set(obj);
+            var updates = {};
+            updates["/games/" + game] = obj;
+            return firebase.database().ref("games/" + game).push(obj);
+        };
+       });
+      };
+
 self.removeChipFire = removeChipFire;
     function removeChipFire(chip,index) {
       console.log(chip, index);
@@ -133,15 +205,14 @@ self.removeChipFire = removeChipFire;
 self.addSongFire = addSongFire;
     function addSongFire(pick, uid) {
       console.log(pick, uid);
-      var newPostKey = firebase.database().ref().child('games').push().key;
+      var newPostKey = firebase.database().ref().child('picks').push().key;
       var addData = {
                 uid: uid,
                 gameid: game,
                 gameanduserid: game + "_" + uid,
                 song: pick,
                 played: !!Math.floor(Math.random() * 2),
-                timestamp: Date.now()
-                
+                timestamp: Date.now()  
               };
       var updates = {};
       updates["/picks/" + newPostKey] = addData;
@@ -216,6 +287,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     $scope.uid = user.uid;
     console.log("user is signed in " + JSON.stringify($scope.uid) );
     bindSongs($scope.uid);
+    registerUser($scope.uid);
     // ...
   } else {
      console.log("user is not signed in")
