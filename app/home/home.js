@@ -7,7 +7,7 @@ var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/home', {
         templateUrl: 'home/home.html'
-        
+
     });
 }])
 
