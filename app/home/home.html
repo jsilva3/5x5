@@ -10,10 +10,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-    <link rel="stylesheet" href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.0-rc4/angular-material.css">
-   
-    
-   
+    <link rel="stylesheet" href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.0-rc4/angular-material.css">  
     
 </head>
  
@@ -21,7 +18,7 @@
 <div ng-controller="HomeCtrl as ctrl" data-ng-init="init()" ng-cloak>
     <md-toolbar>
     <div class="md-toolbar-tools md-hue-2" md-scroll-shrink flex layout-align="center center">
-      <h3>Phish | 5 for 5</h3>
+      <span class="md-title">Phish | 5 for 5</span>
     </div>
     </md-toolbar>
       <div class = "card1" flex>
@@ -50,6 +47,7 @@
               md-item-text="item.display"
               md-min-length="1"
               placeholder="Phish Songs"
+              md-autoselect = True
               md-autofocus>
             <md-item-template>
               <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
@@ -81,7 +79,7 @@
             <span class="md-title">
             <div layout = 'row' layout-align="space-between end">
             <div class="form-style-8" >
-            <input type = "text" ng-model="playerFire.name"/>
+            <input class = "my-input" type = "text" ng-model="playerFire.name" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }" placeholder="< who dis?>"/>
             </div>
             <div>
               ({{ctrl.songPicks.score(myPicks)}}/{{myPicks.length}})
@@ -92,7 +90,7 @@
         </md-card-header>  
         <md-card-content class ="md-caption">
           <md-chips ng-model="myPicks" readonly="ctrl.readonly" md-on-remove="ctrl.removeChipFire($chip, $index)">
-           <input disabled />
+           <input disabled/>
             <md-chip-template ng-class="{'played': $chip.played}" my-chip>
             <em>{{$chip.song}}</em>
             </md-chip-template>
@@ -105,7 +103,7 @@
           <md-card-header-text>
             <span class="md-title">
             <div layout = 'row' layout-align="space-between end">
-              <div>{{playerName.name}}</div>
+              <div>{{item.name}}</div>
               <div> ({{ctrl.songPicks.score(item.picks)}}/{{item.picks.length}})</div>
              </div>
              </span>

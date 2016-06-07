@@ -68,3 +68,12 @@ md-input-container {
 {
     border-bottom:1px solid #1DE9B6;
 }
+.my-input {
+  transition:0.5s linear all;
+  border: white;
+}
+
+.my-input.ng-invalid {
+  background: red;
+  color:white;
+}

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
+var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
  
 // Declared route 
 .config(['$routeProvider', function($routeProvider) {
@@ -10,29 +10,6 @@ angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
         
     });
 }])
-
-.directive('myChip', function(){
-  return {
-    restrict: 'EA',
-    link: function(scope, elem, attrs) {
-      var myChip = elem.parent().parent();
-      myChip.addClass('_played');
-      
-      scope.$watch(function(){
-        return scope.$chip.played
-      }, function(newVal){
-        if (newVal) {
-          myChip.addClass('_played');
-         // console.log('add class active');
-        } else {
-          myChip.removeClass('_played');
-         // console.log('remove class active');
-        }
-      })
-      
-    }
-  };
-})
 
 
 // Home controller
@@ -87,11 +64,18 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject) 
     var mysongs = [];
     var gameanduserid = game + "_" + uid;
     //console.log(gameanduserid)
+    //tie mypicks to listener to catch delete chip
     var myPicksRef = firebase.database().ref("picks/");
     var query = myPicksRef
       .orderByChild("gameanduserid")
       .equalTo(gameanduserid);
+
     $scope.myPicks = $firebaseArray(query);
+       // console.log($scope.myPicks);
+    $scope.deleteThis = function(index){
+        console.log(index);
+        $scope.myPicks.$remove(index);
+      };
     
    //players
     var allPlayersRef = firebase.database().ref("games/" + game);
@@ -124,9 +108,10 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject) 
                 .orderByChild("gameanduserid")
                 .equalTo(gameanduserid);
                 $scope.playerName = player;
-                //console.log($scope.allPlayers);
+                
+                console.log($scope.playerName.name);
                 var tempObj = {};
-                tempObj = ({name: $scope.playerName, picks:$firebaseArray(query3)});
+                tempObj = ({name: $scope.playerName.name, picks:$firebaseArray(query3)});
                 arr.push(tempObj);
                 $scope.otherPicks = arr;         
          };
@@ -186,6 +171,7 @@ self.removeChipFire = removeChipFire;
           };
          });
      });
+     bindSongs($scope.uid);
     };
  ///
  ////function to add songs to current game picks

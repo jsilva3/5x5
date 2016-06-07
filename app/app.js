@@ -1,9 +1,10 @@
 'use strict';
  
-angular.module('myApp', [
+var myApp = angular.module('myApp', [
     'ngRoute',
     'ngMaterial',
     'ngMessages',
+    'ngAnimate',
     'firebase',
     'myApp.home'           // Newly added home module
 ]).
@@ -21,7 +22,5 @@ config(['$routeProvider', function($routeProvider) {
     .accentPalette('teal');
 
 });
- 
 
-'use strict';
  
