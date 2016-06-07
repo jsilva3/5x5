@@ -53,7 +53,7 @@
               <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
             </md-item-template>
             <md-not-found>
-              No states matching "{{ctrl.searchText}}" were found.
+              No songs matching "{{ctrl.searchText}}" were found.
               <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
             </md-not-found>
           </md-autocomplete>
@@ -89,7 +89,7 @@
         </md-card-header-text>
         </md-card-header>  
         <md-card-content class ="md-caption">
-          <md-chips ng-model="myPicks" readonly="ctrl.readonly" md-on-remove="ctrl.removeChipFire($chip, $index)">
+          <md-chips md-max-chips="5" ng-model="myPicks" readonly="ctrl.readonly" md-on-remove="ctrl.removeChipFire($chip, $index)">
            <input disabled/>
             <md-chip-template ng-class="{'played': $chip.played}" my-chip>
             <em>{{$chip.song}}</em>
@@ -98,7 +98,7 @@
           </md-chips>
         </md-card-content>
       </md-card>
-      <md-card ng-repeat="item in otherPicks">
+      <md-card ng-repeat="item in otherPicks" ng-show="item.picks.length != 0">
         <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
           <md-card-header-text>
             <span class="md-title">
