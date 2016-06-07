@@ -23,22 +23,6 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject) 
     self.readonly = false;
     self.removable = true;
     self.songPicks = this;
-//picks player 2
-    self.songPicks.picks2 = [
-      {song:"DWD", played:false},
-      {song:"Rift", played:true},
-      {song:"Ghost", played:true}
-    ];
-//picks player 3
-    self.songPicks.picks3 = [
-      {song:"You Enjoy Myself", played:false},
-      {song:"Harry Hood", played:false},
-    ];
-    $scope.players2 = [
-      {name:"Joe", picks:self.songPicks.picks2},
-      {name:"Bob", picks:self.songPicks.picks3}
-      
-    ];
     //console.log ($scope.players)
     
     self.songPicks.addPick = addPick;
@@ -59,6 +43,7 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject) 
     self.clear = function() {
       self.searchText = "";
     };
+
 //self.bindSongs = bindSongs;
  function bindSongs(uid){
     var mysongs = [];
@@ -72,7 +57,7 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject) 
 
     $scope.myPicks = $firebaseArray(query);
        // console.log($scope.myPicks);
-    $scope.deleteThis = function(index){
+        $scope.deleteThis = function(index){
         console.log(index);
         $scope.myPicks.$remove(index);
       };
@@ -83,10 +68,6 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject) 
       .orderByChild("player");
     $scope.allPlayers = $firebaseArray(query7);
     //console.log($scope.allPlayers);
-    
-    //other pick
-    var test = [];
-    var tempPicks =[];
 
     //get unique players in a game
     var otherPicksRef = firebase.database().ref("games/" + game);
@@ -111,8 +92,10 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject) 
                 
                 console.log($scope.playerName.name);
                 var tempObj = {};
+                if ($scope.playerName.timestamp) {
                 tempObj = ({name: $scope.playerName.name, picks:$firebaseArray(query3)});
                 arr.push(tempObj);
+                };
                 $scope.otherPicks = arr;         
          };
          

@@ -79,7 +79,7 @@
             <span class="md-title">
             <div layout = 'row' layout-align="space-between end">
             <div class="form-style-8" >
-            <input class = "my-input" type = "text" ng-model="playerFire.name" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }" placeholder="< who dis?>"/>
+            <input class = "my-input" type = "text" enter-submit ng-model="playerFire.name" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }" placeholder="< who dis?>"/>
             </div>
             <div>
               ({{ctrl.songPicks.score(myPicks)}}/{{myPicks.length}})
