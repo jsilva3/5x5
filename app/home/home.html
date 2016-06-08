@@ -10,19 +10,19 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-    <link rel="stylesheet" href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.0-rc4/angular-material.css">  
+
     
 </head>
  
 <body>
-<div ng-controller="HomeCtrl as ctrl" data-ng-init="init()" ng-cloak>
+<div ng-controller="HomeCtrl as ctrl" data-ng-init="init()" ng-cloak="" class="myclass">
     <md-toolbar>
     <div class="md-toolbar-tools md-hue-2" md-scroll-shrink flex layout-align="center center">
       <span class="md-title">Phish | 5 for 5</span>
     </div>
     </md-toolbar>
       <div class = "card1" flex>
-      <md-content class="md-padding">
+      <md-content layout-padding="">
         <section layout="vertical" layout-align="center center">
         <div layout="column" flex>
         <div>
@@ -35,8 +35,8 @@
            <form ng-submit="$event.preventDefault()">
             <p align ="center" class="md-title title1" >What songs will be played tonight?</p>
             <div layout="row" layout-align="center end" flex>
-            <div flex="80">
-            <md-autocomplete 
+            <div flex="85">
+            <md-autocomplete
               ng-disabled="ctrl.isDisabled"
               md-no-cache="ctrl.noCache"
               md-selected-item="ctrl.selectedItem"
@@ -44,22 +44,28 @@
               md-search-text="ctrl.searchText"
               md-selected-item-change="ctrl.selectedItemChange(item)"
               md-items="item in ctrl.querySearch(ctrl.searchText)"
-              md-item-text="item.display"
+              md-item-text="item.song_name_display"
               md-min-length="1"
               placeholder="Phish Songs"
-              md-autoselect = True
-              md-autofocus>
-            <md-item-template>
-              <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
-            </md-item-template>
-            <md-not-found>
-              No songs matching "{{ctrl.searchText}}" were found.
-              <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
-            </md-not-found>
-          </md-autocomplete>
+              md-menu-class="autocomplete-custom-template">
+        <md-item-template>
+          <span class="item-title">
+            <md-icon md-svg-icon="img/ic_music_note_black_18px.svg"></md-icon>
+            <span> {{item.song_name_display}} </span>
+          </span>
+          <span class="item-metadata">
+            <span class="item-metastat">
+              <strong>{{item.gap_shows}}</strong> show gap
+            </span>
+            <span class="item-metastat">
+              <strong>{{item.gap_days}}</strong> day gap
+            </span>
+          </span>
+        </md-item-template>
+      </md-autocomplete>
           </div>
           <div>
-          <md-button class="md-raised md-primary button-height" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.display)">Add to List</md-button>
+          <md-button class="md-raised md-primary button-height" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.song_name_display)">Add to List</md-button>
           </div>
           </div>
           <br/>
@@ -79,7 +85,7 @@
             <span class="md-title">
             <div layout = 'row' layout-align="space-between end">
             <div class="form-style-8" >
-            <input class = "my-input" type = "text" enter-submit ng-model="playerFire.name" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }" placeholder="< who dis?>"/>
+            <input class = "my-input" type = "text" enter-submit ng-model="playerFire.name" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }" placeholder="<player name>"/>
             </div>
             <div>
               ({{ctrl.songPicks.score(myPicks)}}/{{myPicks.length}})

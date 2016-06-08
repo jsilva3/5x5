@@ -11,9 +11,7 @@
   
 }
 
-.md-padding {
- padding: 5px;
-}
+
 md-chip.ng-scope._played {
   background: #1DE9B6!important;
   color: white !important;
@@ -77,3 +75,20 @@ md-input-container {
   background: red;
   color:white;
 }
+
+.autocomplete-custom-template li {
+  border-bottom: 1px solid #ccc;
+  height: auto;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  white-space: normal;
+  letter-spacing: 0.005em; }
+.autocomplete-custom-template li:last-child {
+  border-bottom-width: 0; }
+.autocomplete-custom-template .item-title,
+.autocomplete-custom-template .item-metadata {
+  display: block;
+  line-height: 2; }
+.autocomplete-custom-template .item-title md-icon {
+  height: 16px;
+  width: 16px; }
