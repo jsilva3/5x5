@@ -19,9 +19,7 @@ md-chip.ng-scope._played {
 .title1 {
   margin: 8px;
 }
-.md-scroll-mask {
-    position: initial
-}
+
 
 md-input-container:not(.md-input-invalid).md-input-focused .md-input {
     border-color: #1DE9B6;
@@ -81,8 +79,7 @@ md-input-container {
   height: auto;
   padding-top: 4px;
   padding-bottom: 4px;
-  white-space: normal;
-  letter-spacing: 0.005em; }
+  white-space: normal; }
 .autocomplete-custom-template li:last-child {
   border-bottom-width: 0; }
 .autocomplete-custom-template .item-title,
