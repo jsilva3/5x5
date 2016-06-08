@@ -184,6 +184,7 @@ self.addSongFire = addSongFire;
     // list of `state` value/display objects
     self.simulateQuery = false;
     self.isDisabled    = false;
+    self.noCache       = true;
     self.songs         = loadAll();
     self.querySearch   = querySearch;
     self.selectedItemChange = selectedItemChange;
