@@ -97,4 +97,6 @@ md-input-container {
    word-wrap: break-word;      /* IE */
 
 }
-
+h3 {
+  text-align: center;
+}
