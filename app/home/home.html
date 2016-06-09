@@ -23,10 +23,10 @@
           <div> </div>
     </div>
     </md-toolbar>
-      <div class = "card1" flex>
+      <div class = "card1">
       <md-content layout-padding="">
         <section layout="vertical" layout-align="center center">
-        <div layout="column" flex>
+        <div layout="column">
         <div>
           <md-card> 
             <md-card-header class="md-hue-1">
@@ -35,16 +35,15 @@
             <md-card-content>
 
            <form ng-submit="$event.preventDefault()">
-             <div layout = "row" layout-align="space-between stretch" flex>
-               <div flex = "70"><p align ="center" class="md-title title1" >What songs will be played tonight?</p></div>
-               <div><md-switch class="md-primary" ng-model="options.hideOld" aria-label="hide songs"><span class="md-caption">rare songs</span></md-switch></div>
-             </div>
-            <div layout="row" layout-align="center end" flex>
+             <div layout = "row" layout-wrap layout-align="space-around stretch">
+               <div flex = "70"><h3 align="center">What songs will be played tonight?</h3></div>
+               <div flex = "30"><md-switch class="md-primary" ng-model="options.hideOld" aria-label="hide songs"><span class="md-caption">rare <md-icon md-svg-icon="img/ic_music_note_black_18px.svg"></md-icon></span></md-switch></div>
             <div flex="70">
+              
             <md-autocomplete
               ng-disabled="ctrl.isDisabled"
               md-no-cache="ctrl.noCache"
-              md-selected-item="ctrl.selectedItem"
+              md-selected-item="ctrl.selectedItem"  
               md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
               md-search-text="ctrl.searchText"
               md-selected-item-change="ctrl.selectedItemChange(item)"
@@ -70,13 +69,10 @@
         </md-item-template>
       </md-autocomplete>
           </div>
-          <div flex>
-          <md-button class="md-raised md-primary button-height" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.song_name_display)">Add to List</md-button>
+          <div flex="30" valign="top">
+          <md-button valign="top" class="md-raised md-primary button-height" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.song_name_display)">Pick It</md-button>
           </div>
-          <div>
-            </div>
-          </div>
-
+             </div>
       <!--<md-checkbox ng-model="ctrl.simulateQuery">Simulate query for results?</md-checkbox>
       <md-checkbox ng-model="ctrl.noCache">Disable caching of queries?</md-checkbox>
       <md-checkbox ng-model="ctrl.isDisabled">Disable the input?</md-checkbox>
