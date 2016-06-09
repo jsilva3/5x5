@@ -22,32 +22,33 @@ var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
 // Home controller
 .controller('HomeCtrl', DemoCtrl); 
 
-function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject, songService) {
+function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject, songService, $http) {
     var game = "KJH7QtFE0u9IjxfNbez";
     $scope.imagePath = "img/cardHeader3.jpg";
     $scope.imagePath = "img/cardHeader3.jpg";
     var self = this;
+    $scope.songData = [];
   $scope.options = {
     hideOld: false,
     cb4: true,
     cb5: false
   };
 
-$scope.getSongList = myFunction();
+
 function myFunction(song) {
        var promise = 
            songService.getSong();
        promise.then(
           function(payload) { 
               $scope.songData = payload.data;
-              console.log("here");
+              return payload.data;
           },
           function(errorPayload) {
               $log.error('failure loading songs', errorPayload);
           });
      };
 
-console.log($scope.getSongList);
+console.log();
 
     self.readonly = false;
     self.removable = true;
