@@ -28,7 +28,7 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject, 
     $scope.imagePath = "img/cardHeader3.jpg";
     var self = this;
   $scope.options = {
-    hideOld: true,
+    hideOld: false,
     cb4: true,
     cb5: false
   };
@@ -258,8 +258,8 @@ self.addSongFire = addSongFire;
     function createFilterFor(query) {
       var lowercaseQuery = angular.lowercase(query);
       return function filterFn(item) {
-        if ($scope.options.hideOld) {
-          return ((item.song_name.indexOf(lowercaseQuery) === 0 && parseInt(item.gap_shows) <= 100));
+        if (!$scope.options.hideOld) {
+          return ((item.song_name.indexOf(lowercaseQuery) === 0 && parseInt(item.gap_shows) <= 150));
         }
         else{
           return item.song_name.indexOf(lowercaseQuery) === 0

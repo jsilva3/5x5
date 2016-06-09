@@ -18,12 +18,9 @@
 <div ng-controller="HomeCtrl as ctrl" data-ng-init="init()" ng-cloak="" class="myclass">
     <md-toolbar>
     <div class="md-toolbar-tools md-hue-2" layout = "row" layout-align="space-between center">
-          <div>
-             <span class="md-title"> Phish | 5 for 5</span>
-            </div>
-            <div>
-              <md-switch class="md-accent" ng-model="options.hideOld" aria-label="hide songs"> <span class="md-caption">hide rare songs</span></md-switch>
-          </div>
+          <div></div>
+          <div><span class="md-title"> Phish | 5 for 5</span></div>
+          <div> </div>
     </div>
     </md-toolbar>
       <div class = "card1" flex>
@@ -38,9 +35,12 @@
             <md-card-content>
 
            <form ng-submit="$event.preventDefault()">
-            <p align ="center" class="md-title title1" >What songs will be played tonight?</p>
+             <div layout = "row" layout-align="space-between stretch" flex>
+               <div flex = "70"><p align ="center" class="md-title title1" >What songs will be played tonight?</p></div>
+               <div><md-switch class="md-primary" ng-model="options.hideOld" aria-label="hide songs"><span class="md-caption">rare songs</span></md-switch></div>
+             </div>
             <div layout="row" layout-align="center end" flex>
-            <div flex="80">
+            <div flex="70">
             <md-autocomplete
               ng-disabled="ctrl.isDisabled"
               md-no-cache="ctrl.noCache"
@@ -70,12 +70,10 @@
         </md-item-template>
       </md-autocomplete>
           </div>
-          <div>
-          
+          <div flex>
           <md-button class="md-raised md-primary button-height" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.song_name_display)">Add to List</md-button>
           </div>
           <div>
-
             </div>
           </div>
 
