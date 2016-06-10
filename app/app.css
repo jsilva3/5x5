@@ -1,9 +1,7 @@
 
-
 .card1 {
   margin: auto;
   max-width: 680px;
-  
 }
 
 .md-toolbar-tools {
@@ -99,4 +97,8 @@ md-input-container {
 }
 h3 {
   text-align: center;
+}
+
+::-webkit-scrollbar { 
+display: none; 
 }

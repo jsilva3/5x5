@@ -22,7 +22,7 @@ var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
 // Home controller
 .controller('HomeCtrl', DemoCtrl); 
 
-function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject, songService, $http) {
+function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject, songService, $http, $mdToast) {
     var game = "KJH7QtFE0u9IjxfNbez";
     $scope.imagePath = "img/cardHeader3.jpg";
     $scope.imagePath = "img/cardHeader3.jpg";
@@ -33,6 +33,38 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject, 
     cb4: true,
     cb5: false
   };
+//toast code
+  var last = {
+      bottom: true,
+      top: false,
+      left: true,
+      right: false
+    };
+  $scope.toastPosition = angular.extend({},last);
+  $scope.getToastPosition = function() {
+    sanitizePosition();
+    return Object.keys($scope.toastPosition)
+      .filter(function(pos) { return $scope.toastPosition[pos]; })
+      .join(' ');
+  };
+  function sanitizePosition() {
+    var current = $scope.toastPosition;
+    if ( current.bottom && last.top ) current.top = false;
+    if ( current.top && last.bottom ) current.bottom = false;
+    if ( current.right && last.left ) current.left = false;
+    if ( current.left && last.right ) current.right = false;
+    last = angular.extend({},current);
+  }
+  $scope.showSimpleToast = function() {
+    var pinTo = $scope.getToastPosition();
+    $mdToast.show(
+      $mdToast.simple()
+        .textContent('Song bank is full, remove a song first if you want to change your picks!')
+        .position(pinTo )
+        .hideDelay(3000)
+    );
+  };
+
 
 
 function myFunction(song) {
@@ -192,6 +224,7 @@ self.removeChipFire = removeChipFire;
 self.addSongFire = addSongFire;
     function addSongFire(pick, uid) {
       console.log(pick, uid);
+      if ($scope.myPicks.length < 5) {
       var newPostKey = firebase.database().ref().child('picks').push().key;
       var addData = {
                 uid: uid,
@@ -204,6 +237,11 @@ self.addSongFire = addSongFire;
       var updates = {};
       updates["/picks/" + newPostKey] = addData;
       return firebase.database().ref().update(updates);
+      }
+      else{
+        console.log("picks are full dude"); 
+        $scope.showSimpleToast();    
+      };
    };
 //
 //autocomplete from sample
