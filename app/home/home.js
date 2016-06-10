@@ -59,9 +59,9 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject, 
     var pinTo = $scope.getToastPosition();
     $mdToast.show(
       $mdToast.simple()
-        .textContent('Song bank is full, remove a song first if you want to change your picks!')
-        .position(pinTo )
-        .hideDelay(3000)
+        .textContent('You have 5 songs! Remove a song if you want to change up your picks.')
+        .position('bottom center')
+        .hideDelay(4000)
     );
   };
 
