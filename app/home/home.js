@@ -57,13 +57,13 @@ function DemoCtrl ($timeout, $q, $log, $location, $scope, $firebaseArray, $fireb
     if ( current.left && last.right ) current.right = false;
     last = angular.extend({},current);
   }
-  $scope.showSimpleToast = function() {
+  $scope.showSimpleToast = function(toastText) {
     var pinTo = $scope.getToastPosition();
     $mdToast.show(
       $mdToast.simple()
-        .textContent('You have 5 songs! Remove a song if you want to change up your picks.')
+        .textContent(toastText)
         .position('bottom center')
-        .hideDelay(4000)
+        .hideDelay(3500)
     );
   };
 
@@ -75,6 +75,7 @@ function DemoCtrl ($timeout, $q, $log, $location, $scope, $firebaseArray, $fireb
   $scope.copyTextToCopy =  $scope.locationAbsUrl;
   $scope.copySuccess = function () {
       console.log('Copied!');
+      $scope.showSimpleToast("Game link copied. Send it to your friends!"); 
   };
   $scope.copyFail = function (err) {
       console.error('Error!', err);
@@ -291,7 +292,7 @@ self.addSongFire = addSongFire;
       }
       else{
         console.log("picks are full dude"); 
-        $scope.showSimpleToast();    
+        $scope.showSimpleToast("You have 5 songs! Remove a song if you want to change up your picks.");    
       };
    };
 //
