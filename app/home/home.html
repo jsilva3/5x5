@@ -7,7 +7,6 @@
  
     <title>AngularJS & Firebase Web App</title>
  
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 
@@ -20,7 +19,14 @@
     <md-toolbar>
     <div class="md-toolbar-tools md-hue-2" layout-align="center center">
       <span class="md-title">Phish | 5 for 5</span>
-    </div>
+      <span flex></span>
+      <md-button class="md-icon-button" type="submit" value="add" ng-click="ctrl.updatePlayed(ctrl.selectedItem.song_name_display)">
+        <md-icon md-font-icon="material-icons">update</md-icon>
+      </md-button>
+       <md-button class="md-icon-button" clipboard supported="copySupported" text="copyTextToCopy"" on-copied="copySuccess()" on-error="copyFail(err)">
+       <md-icon md-font-icon="material-icons">content_copy</md-icon>
+       </md-button>
+   </div>
     </md-toolbar>
       <div class = "card1">
 

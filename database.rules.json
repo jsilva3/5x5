@@ -2,7 +2,8 @@
   ".read": true,
   ".write": true,
   "picks": {
-      ".indexOn": ["gameid","uid","gameanduserid"]
+    "$showid": {
+      ".indexOn": ["gameid","uid","gameanduserid","song"]}
     },
   "games": {
     ".write": "!data.exists()"

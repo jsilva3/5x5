@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
+var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase', 'angular-clipboard'])
  
 // Declared route 
 .config(['$routeProvider', function($routeProvider) {
@@ -10,6 +10,7 @@ var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
 
     });
 }])
+
 .factory('songService', function($http) {
     return {
       getSong: function() {
@@ -22,10 +23,11 @@ var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase'])
 // Home controller
 .controller('HomeCtrl', DemoCtrl); 
 
-function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject, songService, $http, $mdToast) {
+function DemoCtrl ($timeout, $q, $log, $location, $scope, $firebaseArray, $firebaseObject, songService, $http, $mdToast, clipboard) {
     var game = "KJH7QtFE0u9IjxfNbez";
     $scope.imagePath = "img/cardHeader3.jpg";
     $scope.imagePath = "img/cardHeader3.jpg";
+    var showid = "20160622";
     var self = this;
     $scope.songData = [];
   $scope.options = {
@@ -65,6 +67,18 @@ function DemoCtrl ($timeout, $q, $log, $scope, $firebaseArray, $firebaseObject, 
     );
   };
 
+////clipboard
+  $scope.copySupported = false;
+  $scope.locationAbsUrl = $location.absUrl();
+  console.log($location.absUrl());
+  //var copyUrl = $location.path();
+  $scope.copyTextToCopy =  $scope.locationAbsUrl;
+  $scope.copySuccess = function () {
+      console.log('Copied!');
+  };
+  $scope.copyFail = function (err) {
+      console.error('Error!', err);
+  };
 
 
 function myFunction(song) {
@@ -112,7 +126,7 @@ console.log();
     var gameanduserid = game + "_" + uid;
     //console.log(gameanduserid)
     //tie mypicks to listener to catch delete chip
-    var myPicksRef = firebase.database().ref("picks/");
+    var myPicksRef = firebase.database().ref("picks/" + showid);
     var query = myPicksRef
       .orderByChild("gameanduserid")
       .equalTo(gameanduserid);
@@ -120,7 +134,7 @@ console.log();
     $scope.myPicks = $firebaseArray(query);
        // console.log($scope.myPicks);
         $scope.deleteThis = function(index){
-        console.log(index);
+        //console.log(index);
         $scope.myPicks.$remove(index);
       };
     
@@ -145,14 +159,14 @@ console.log();
                 syncObject.$bindTo($scope, "playerFire");
              
          }else {
-                var allPicksRef = firebase.database().ref("picks/");
+                var allPicksRef = firebase.database().ref("picks/" + showid);
                 var gameanduserid = game + "_" + player.player;      
                 var query3 = allPicksRef
                 .orderByChild("gameanduserid")
                 .equalTo(gameanduserid);
                 $scope.playerName = player;
                 
-                console.log($scope.playerName.name);
+                //console.log($scope.playerName.name);
                 var tempObj = {};
                 if ($scope.playerName.timestamp) {
                 tempObj = ({name: $scope.playerName.name, picks:$firebaseArray(query3)});
@@ -193,17 +207,52 @@ function createNewGame() {
 
       };
 
+self.updatePlayed = updatePlayed;
+  function updatePlayed(song) {
+            //var newUserKey = firebase.database().ref().child("games").push().key;
+            var obj = {};
+            obj["player"] = $scope.uid;
+            var updates = {};
+            var songandshowid = song + "_" + showid;
+            var addDataTrue = {
+                played: true,
+                timestamp: Date.now()  
+              };
+            var addDataFalse = {
+                played: false,
+                timestamp: Date.now()  
+              };
+              console.log(song);
+            var songsRefQuery = firebase.database().ref("picks/" + showid);
+              songsRefQuery
+                .orderByChild("song")
+                .equalTo(song)
+                .once("value", function(snapshot) {
+                    snapshot.forEach(function(childSnapshot) {
+                      var songsRefQuery = firebase.database().ref("picks/" + showid + "/" + childSnapshot.key);
+                      //console.log(snapshot.val().played);
+                      if (childSnapshot.val().played) {
+                        songsRefQuery.update(addDataFalse);
+                      }else{
+                        songsRefQuery.update(addDataTrue);
+                      };
+                    });
+                });
+    
+
+      };
+
 self.removeChipFire = removeChipFire;
     function removeChipFire(chip,index) {
       console.log(chip, index);
-      var ref2 = firebase.database().ref("picks");
+      var ref2 = firebase.database().ref("picks/" + showid);
       ref2
         .orderByChild("gameid")
         .startAt(game).endAt(game)
         .once("value", function(snapshot) {
           angular.forEach(snapshot.val(),function(pick,key){
            if ((pick.song == chip.song) && (pick.uid == $scope.uid)) {  
-              var ref2 = firebase.database().ref("picks/" + key);
+              var ref2 = firebase.database().ref("picks/" + showid + "/" + key);
               ref2.remove()
                .then(function() {
                console.log("Remove succeeded.")
@@ -223,19 +272,21 @@ self.removeChipFire = removeChipFire;
  ///
 self.addSongFire = addSongFire;
     function addSongFire(pick, uid) {
-      console.log(pick, uid);
+      //console.log(pick, uid);
       if ($scope.myPicks.length < 5) {
-      var newPostKey = firebase.database().ref().child('picks').push().key;
+      var newPostKey = firebase.database().ref().child("picks" + "/" + showid).push().key;
       var addData = {
                 uid: uid,
                 gameid: game,
                 gameanduserid: game + "_" + uid,
                 song: pick,
+                songandgameid: pick + "_" + game,
+                songandshowid: pick + "_" + showid,
                 played: !!Math.floor(Math.random() * 2),
                 timestamp: Date.now()  
               };
       var updates = {};
-      updates["/picks/" + newPostKey] = addData;
+      updates["/picks/" + "/" + showid + "/" + newPostKey] = addData;
       return firebase.database().ref().update(updates);
       }
       else{
@@ -276,10 +327,10 @@ self.addSongFire = addSongFire;
       }
     }
     function searchTextChange(text) {
-      $log.info('Text changed to ' + text);
+      //$log.info('Text changed to ' + text);
     }
     function selectedItemChange(item) {
-      $log.info('Item changed to ' + JSON.stringify(item));
+      //$log.info('Item changed to ' + JSON.stringify(item));
     }
     /**
   
