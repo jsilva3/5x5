@@ -213,7 +213,13 @@ function createNewGame() {
                       player: $scope.uid,
                       timestamp: Date.now()  
                     };
-                  return firebase.database().ref("/games/" + game + "/" + $scope.uid).update(addData);
+                      var addData2 = {
+                      gameid: game,
+                      timestamp: Date.now()  
+                    };
+                    updates["/games/" + game + "/" + $scope.uid] = addData;
+                    updates["/users/" + $scope.uid + "/" + showid] = addData2;
+                   return firebase.database().ref().update(updates);
                   }else {
                     $location.path("/newGame");
                   };
