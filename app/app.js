@@ -7,13 +7,13 @@ var myApp = angular.module('myApp', [
     'ngAnimate',
     'firebase',
     'myApp.home',
-    'myApp.newGame'           // Newly added home module
+    'myApp.newgame'           // Newly added home module
 ]).
 config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     // Set defualt view of our app to home
     //$locationProvider.hashPrefix('!');
     $routeProvider.otherwise({
-        redirectTo: '/newGame'
+        redirectTo: '/newgame'
     });
 
 }])

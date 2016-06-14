@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('myApp.newGame', ['ngRoute','firebase'])
+angular.module('myApp.newgame', ['ngRoute','firebase'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/newGame', {
-    templateUrl: 'launch/newGame.html',
+  $routeProvider.when('/newgame', {
+    templateUrl: 'launch/newgame.html',
     controller: 'newGameCtrl'
   });
 }])
