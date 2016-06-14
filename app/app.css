@@ -8,7 +8,7 @@
   box-shadow: 0 -1px 0 #e5e5e5,0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);
   
 }
-
+.md-scroll-mask { position: initial;}
 
 md-chip.ng-scope._played {
   background: #1DE9B6!important;

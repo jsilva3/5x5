@@ -5,7 +5,7 @@ var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase', '
  
 // Declared route 
 .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/home', {
+    $routeProvider.when('/home/:gameNumber', {
         templateUrl: 'home/home.html'
 
     });
@@ -21,11 +21,16 @@ var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase', '
 
 
 // Home controller
-.controller('HomeCtrl', DemoCtrl); 
+.controller('HomeCtrl', HomeCtrl); 
 
-function DemoCtrl ($timeout, $q, $log, $location, $scope, $firebaseArray, $firebaseObject, songService, $http, $mdToast, clipboard) {
-    var game = "KJH7QtFE0u9IjxfNbez";
-    $scope.imagePath = "img/cardHeader3.jpg";
+function HomeCtrl ($timeout, $q, $log, $location, $scope, $rootScope, $firebaseArray, $firebaseObject, songService, $http, $mdToast, $routeParams, clipboard) {
+  $log.info($routeParams.gameNumber);
+  if ($routeParams.gameNumber) {
+    var game = $routeParams.gameNumber;
+  }else {
+    console.log("error, no game id")
+  };
+
     $scope.imagePath = "img/cardHeader3.jpg";
     var showid = "20160622";
     var self = this;
@@ -196,16 +201,28 @@ function createNewGame() {
 };
   function registerUser(uid) {
             //var newUserKey = firebase.database().ref().child("games").push().key;
-            var obj = {};
-            obj["player"] = $scope.uid;
-            var updates = {};
-            var addData = {
-                player: $scope.uid,
-                timestamp: Date.now()  
-              };
-            return firebase.database().ref("/games/" + game + "/" + $scope.uid).update(addData);
-    
+            var ref = firebase.database().ref("games/" +game);
+              ref.once("value")
+                .then(function(snapshot) {
+                    var gameCreated = snapshot.exists();  
+                    if (gameCreated) {
+                      var obj = {};
+                      obj["player"] = $scope.uid;
+                      var updates = {};
+                      var addData = {
+                      player: $scope.uid,
+                      timestamp: Date.now()  
+                    };
+                  return firebase.database().ref("/games/" + game + "/" + $scope.uid).update(addData);
+                  }else {
+                    $location.path("/newGame");
+                  };
+                    console.log (gameCreated);
 
+                  },function(error) {
+                    // The Promise was rejected.
+                    console.error(error);
+                  });
       };
 
 self.updatePlayed = updatePlayed;
@@ -375,7 +392,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     // User is signed in.
     
     var isAnonymous = user.isAnonymous;
-    $scope.uid = user.uid;
+    $rootScope.uid = user.uid;
     console.log("user is signed in " + JSON.stringify($scope.uid) );
     bindSongs($scope.uid);
     registerUser($scope.uid);

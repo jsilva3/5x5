@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+ 
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="icon" href="https://getbootstrap.com/favicon.ico">
+ 
+    <title>AngularJS & Firebase Web App</title>
+ 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+
+    
+</head>
+ 
+<body>
+<div ng-controller="newGameCtrl as ctrl" data-ng-init="init()" ng-cloak="">
+  <md-content>
+    <md-toolbar>
+    <div class="md-toolbar-tools md-hue-2" layout-align="space-between center">
+      <div>
+      </div>
+      <div>
+         <span class="md-title">Phish | 5 for 5</span>
+      </div>
+      <div>
+      </div>
+   </div>
+    </md-toolbar>
+      <div class = "card1">
+
+        <div layout="column">
+        <div class = "primaryCard">
+          <md-card> 
+            <md-card-header class="md-hue-1">
+            </md-card-header>
+              <img ng-src="{{imagePath}}" class="md-card-image" alt="Card Header">
+              
+            <md-card-content>
+                <div layout = "row" layout-align ="center">
+                    <div>
+                <span><md-button class="md-raised md-primary" type="submit" ng-click="ctrl.newGame()"><i class="material-icons">open_in_new</i>Launch New Game</md-button>
+                </span>   </div>
+                </div>
+            </md-card-content>
+          </md-card>
+  	    </md-content>
+        </div>
+        </div>
+      </div>
+</body>
+</html>

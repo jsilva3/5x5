@@ -6,16 +6,18 @@ var myApp = angular.module('myApp', [
     'ngMessages',
     'ngAnimate',
     'firebase',
-    'myApp.home'           // Newly added home module
+    'myApp.home',
+    'myApp.newGame'           // Newly added home module
 ]).
-config(['$routeProvider', function($routeProvider) {
+config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     // Set defualt view of our app to home
-     
+    //$locationProvider.hashPrefix('!');
     $routeProvider.otherwise({
-        redirectTo: '/home'
+        redirectTo: '/newGame'
     });
 
 }])
+
 .config(function($mdThemingProvider) {
    $mdThemingProvider.theme('default')
     .primaryPalette('indigo')
