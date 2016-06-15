@@ -15,7 +15,7 @@
 </head>
  
 <body>
-<div ng-controller="newGameCtrl as ctrl" data-ng-init="init()" ng-cloak="">
+<div ng-controller="newGameCtrl as ctrl" data-ng-init="init()" ng-cloak="" class ="newgameView">
   <md-content>
     <md-toolbar>
     <div class="md-toolbar-tools md-hue-2" layout-align="space-between center">
@@ -38,11 +38,28 @@
               <img ng-src="{{imagePath}}" class="md-card-image" alt="Card Header">
               
             <md-card-content>
-                <div layout = "row" layout-align ="center">
-                    <div>
-                <span><md-button class="md-raised md-primary" type="submit" ng-click="ctrl.newGame()"><i class="material-icons">open_in_new</i>Launch New Game</md-button>
-                </span>   </div>
+                <div layout = "row" layout-align ="space-around center">
+                    <div class = "newgame">
+                <md-button class="md-raised md-primary" type="submit" ng-click="ctrl.newGame()"><i class="material-icons">open_in_new</i> Launch New Game</md-button>
+                </div> 
+                <div>
+                  <span class = "md-title">OR</span>
+                </div>                        
+                <div class = "newgame">
+                   <md-button class="md-raised md-primary" type="submit" ng-click="ctrl.gotoGame(ctrl.userGame)"><i class="material-icons">games</i> Join Existing Game</md-button>
+                  <md-input-container>
+                  <label>Current Games</label>
+                   <md-select ng-model="ctrl.userGame">
+                    <md-option ng-repeat="game in currentGames" value="{{game.game}}">
+                    {{game.num}}
+                  </md-option>
+                 </md-select>
+                </md-input-container>               
+               
                 </div>
+                </div>
+                                 <br>
+                 <hr class="style3">
             </md-card-content>
           </md-card>
   	    </md-content>

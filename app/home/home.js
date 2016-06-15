@@ -199,7 +199,7 @@ function createNewGame() {
     numPlayers: "1"
   });
 };
-  function registerUser(uid) {
+    function registerUser(uid) {
             //var newUserKey = firebase.database().ref().child("games").push().key;
             var ref = firebase.database().ref("games/" +game);
               ref.once("value")
@@ -213,13 +213,7 @@ function createNewGame() {
                       player: $scope.uid,
                       timestamp: Date.now()  
                     };
-                      var addData2 = {
-                      gameid: game,
-                      timestamp: Date.now()  
-                    };
-                    updates["/games/" + game + "/" + $scope.uid] = addData;
-                    updates["/users/" + $scope.uid + "/" + showid] = addData2;
-                   return firebase.database().ref().update(updates);
+                  return firebase.database().ref("/games/" + game + "/" + $scope.uid).update(addData);
                   }else {
                     $location.path("/newGame");
                   };

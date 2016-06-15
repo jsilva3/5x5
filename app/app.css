@@ -18,7 +18,19 @@ md-chip.ng-scope._played {
   margin: 8px;
 }
 
+md-select {
+min-width:120px;
+}
 
+.style3 {
+	border-top: 1px dashed #8c8b8b;
+}
+md-button {
+  text-align: center;
+}
+.material-icons {
+  margin: 0 auto;
+}
 md-input-container:not(.md-input-invalid).md-input-focused .md-input {
     border-color: #1DE9B6;
     border: 0px;
