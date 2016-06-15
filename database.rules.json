@@ -7,5 +7,8 @@
     },
   "games": {
     ".write": "!data.exists()"
+  },
+  "shows": {
+    ".write": false
   }
 }
