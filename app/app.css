@@ -119,3 +119,24 @@ display: none;
        left: 50%;
        transform: translate3d(-50%, 0, 0);
 }
+
+.primaryCard .overlay { 
+   position: absolute; 
+   top: 40%; 
+   left: 0; 
+   width: auto;
+   color: white;
+   letter-spacing: -1px;  
+   background: rgb(0, 0, 0); /* fallback color */
+   background: rgba(0, 0, 0, 0.7);
+   padding-top: 8px; 
+   padding-bottom: 8px;
+   padding-left: 15px;  
+   padding-right: 15px;
+   font-size: 13px;
+}
+.primaryCard .image {
+  position: relative;
+  left: 0;
+  top: 0;
+}
