@@ -17,6 +17,7 @@ function newGameCtrl($scope, $location, $firebaseArray) {
     $scope.test = 1;
     var showid = "20160622";
     var self = this;
+    this.nextShow = $scope.nextShow;
     $scope.gameCount = 0;
     $scope.userGames = '';
 //init
@@ -31,6 +32,8 @@ firebase.auth().onAuthStateChanged(function(user) {
     $scope.uid = user.uid;
     console.log("user is signed in " + JSON.stringify($scope.uid) );
     loadGames($scope.uid);
+    nextShow();
+ 
     //registerUser($scope.uid);
     // ...
   } else {
@@ -39,8 +42,19 @@ firebase.auth().onAuthStateChanged(function(user) {
     // ...
   }  // ...
 });
-}; 
-
+};  
+      
+function nextShow() {
+  var nextGameRef = firebase.database().ref("shows/");
+    nextGameRef
+      .orderByChild("time")
+      .startAt(Date.now())
+      .limitToFirst(1)	
+      .once("value").then( function(snapshot) {
+        $scope.nextShow = snapshot.val();
+        console.log ($scope.nextShow);
+});
+};
 
 
 //current games
