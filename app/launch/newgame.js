@@ -127,10 +127,7 @@ function gotoGame(gameid) {
 };
 
 
-
-
-
-//auth
+//init
 //
 $scope.init = function () {
   firebase.auth().onAuthStateChanged(function(user) {
@@ -141,7 +138,7 @@ $scope.init = function () {
     $scope.uid = user.uid;
     console.log("user is signed in " + JSON.stringify($scope.uid) );
     loadGames($scope.uid);
-    getNextShow($scope.uid);
+    //getNextShow($scope.uid);
     
     //registerUser($scope.uid);
     // ...
