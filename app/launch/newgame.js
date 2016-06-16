@@ -1,4 +1,5 @@
-'use strict';
+(function () {
+  'use strict';
 
 angular.module('myApp.newgame', ['ngRoute','firebase'])
 
@@ -11,51 +12,50 @@ angular.module('myApp.newgame', ['ngRoute','firebase'])
 
 .controller('newGameCtrl', newGameCtrl); 
 
-function newGameCtrl($scope, $location, $firebaseArray) {
-
+function newGameCtrl($timeout, $q, $scope, $location, $firebaseArray,$firebaseObject) {
+    var self = this;
     $scope.imagePath = "img/cardHeader3.jpg";
     $scope.test = 1;
     var showid = "20160622";
-    var self = this;
-    this.nextShow = $scope.nextShow;
+
+    self.nextShow2 = '';
     $scope.gameCount = 0;
     $scope.userGames = '';
-//init
-$scope.init = function () {
 
-  
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    
-    var isAnonymous = user.isAnonymous;
-    $scope.uid = user.uid;
-    console.log("user is signed in " + JSON.stringify($scope.uid) );
-    loadGames($scope.uid);
-    nextShow();
- 
-    //registerUser($scope.uid);
-    // ...
-  } else {
-     console.log("user is not signed in")
-    // User is signed out.
-    // ...
-  }  // ...
-});
-};  
-      
-function nextShow() {
-  var nextGameRef = firebase.database().ref("shows/");
-    nextGameRef
-      .orderByChild("time")
-      .startAt(Date.now())
-      .limitToFirst(1)	
-      .once("value").then( function(snapshot) {
-        $scope.nextShow = snapshot.val();
-        console.log ($scope.nextShow);
-});
+     
+function getNextShow(uid) {
+           var tempObj = {};  
+           var uid = uid;
+ var nextShowRef = firebase.database().ref("/shows/").orderByChild("time").startAt(Date.now()).limitToFirst(1);
+ var syncObject = $firebaseObject(nextShowRef);  
+ var ref99 = firebase.database().ref("/shows/");
+              ref99
+              .orderByChild("time")
+              .startAt(Date.now())
+              .limitToFirst(1)
+                .once("value")
+                .then(function(snapshot) {
+                    var showFound = snapshot.exists();  
+                    if (showFound) {
+                        var arr= [];
+                      snapshot.forEach(function(childSnapshot) {
+                      tempObj= {
+                      date_text: childSnapshot.val().date_text,
+                      time: childSnapshot.val().time,
+                      venue: childSnapshot.val().venue,
+                      showid: childSnapshot.val().showid }
+                      arr.push(tempObj);
+                      $scope.nextShow = tempObj;
+                      });
+   
+                  }else {
+                    console.log("show not found")
+                  };
+                  },function(error) {
+                    // The Promise was rejected.
+                    console.error(error);
+                  });
 };
-
 
 //current games
 function loadGames(uid) {
@@ -78,7 +78,7 @@ var currentGamesRef = firebase.database().ref("users/" + $scope.uid + "/" + show
            console.log ($scope.currentGames);         
          // console.log ($scope.userGames);
       });  
-      console.log ($scope.userGames);                      
+     // console.log ($scope.userGames);                      
   // this.userGames = ('Game1 Game2 Game3 ').split(' ').map(function (game) { return { text: game }; });
 
 };
@@ -132,5 +132,26 @@ function gotoGame(gameid) {
 
 //auth
 //
+$scope.init = function () {
+  firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+    
+    var isAnonymous = user.isAnonymous;
+    $scope.uid = user.uid;
+    console.log("user is signed in " + JSON.stringify($scope.uid) );
+    loadGames($scope.uid);
+    getNextShow($scope.uid);
+    
+    //registerUser($scope.uid);
+    // ...
+  } else {
+     console.log("user is not signed in")
+    // User is signed out.
+    // ...
+  }  // ...
+});
+};  
    
 };
+})();
