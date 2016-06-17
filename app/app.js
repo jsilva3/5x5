@@ -20,7 +20,7 @@ config(['$routeProvider', '$locationProvider', function($routeProvider, $locatio
 
 .config(function($mdThemingProvider) {
    $mdThemingProvider.theme('default')
-    .primaryPalette('indigo')
+    .primaryPalette('blue-grey')
     .accentPalette('teal');
   $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
 

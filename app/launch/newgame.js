@@ -15,7 +15,7 @@ angular.module('myApp.newgame', ['ngRoute','firebase'])
 function newGameCtrl($timeout, $q, $scope, $location, $firebaseArray,$firebaseObject) {
     var self = this;
     $scope.imagePath = "img/cardHeader3.jpg";
-    $scope.imageBetaPath = "img/betabadge.svg";
+    $scope.imageBetaPath = "img/betabadge2.svg";
     $scope.test = 1;
     var showid = '';
 
@@ -94,7 +94,7 @@ var currentGamesRef = firebase.database().ref("users/" + $scope.uid + "/" + show
         //updates["/games/" + newGameKey + "/"] = addData3;
         updates["/games/" + newGameKey + "/" + $scope.uid] = addData;
         updates["/gameshow/" + newGameKey] = addData3;
-        updates["/users/" + $scope.uid + "/" + showid + "/" + newPostKey] = addData2;
+       // updates["/users/" + $scope.uid + "/" + showid + "/" + newPostKey] = addData2;
         firebase.database().ref().update(updates);
         //changeView
         

@@ -12,7 +12,7 @@
 
 md-chip.ng-scope._played {
   background: #1DE9B6!important;
-  color: white !important;
+  color: black !important;
 }
 .title1 {
   margin: 8px;
@@ -29,7 +29,9 @@ md-button {
   text-align: center;
 }
 .material-icons {
-  margin: 0 auto;
+  position: relative; 
+  right: 0px; 
+  bottom: -7px
 }
 md-input-container:not(.md-input-invalid).md-input-focused .md-input {
     border-color: #1DE9B6;
@@ -140,4 +142,20 @@ display: none;
   top: 0;
 }
 
-.imagebeta { position: relative; right: 0px; bottom: -3px;}
+.imagebeta { 
+  position: relative; 
+  right: 8px; 
+  bottom: 5px;}
+
+.borderbar {
+  background-color: #9FA8DA;
+}
+.card2  {
+  padding-top: 0px;
+
+  padding-bottom: 8px;
+}
+
+.card3  {
+  padding-top: 8px;
+}

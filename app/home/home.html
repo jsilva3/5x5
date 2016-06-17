@@ -24,7 +24,7 @@
         </md-button>
       </div>
       <div>
-         <span class="md-title"><a href="#/newGame">Phish Show | 5 for 5 | <img ng-src="{{imageBetaPath}}" height="32" class="imagebeta"></a></span>
+         <span class="md-title"><a href="#/newGame">Phish Show | 5 for 5<img ng-src="{{imageBetaPath}}" height="30" class="imagebeta"></a></span>
         
       </div>
       <div>
@@ -45,8 +45,9 @@
               Picks for:
               <br>{{showDetails.date_text}}
               <br>@ {{showDetails.venue}}</div>
+              <div md-colors="::{backgroundColor: 'default-primary-200'}">&nbsp</div>
             </div>
-            <md-card-content>
+            <md-card-content class = "card2">
 
            <form ng-submit="$event.preventDefault()">
            <div layout="row" layout-align="center end">
@@ -89,7 +90,7 @@
       </md-autocomplete>
           </div>
           <div>
-          <md-button class="md-raised md-primary button-height" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.song_name_display)">Add to List</md-button>
+          <md-button class="md-raised md-accent md-hue-2" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.song_name_display)">Add to List</md-button>
           </div>
           </div>
           <br/>
@@ -104,8 +105,8 @@
     </div>
   </div>
     <div>
-      <md-card>
-        <md-card-header md-colors="::{backgroundColor: 'default-accent-800'}">
+      <md-card >
+        <md-card-header md-colors="::{backgroundColor: 'default-primary-800'}">
          <md-card-header-text>
             <span class="md-title">
             <div layout = 'row' layout-align="space-between end">
@@ -119,7 +120,7 @@
             </span>   
         </md-card-header-text>
         </md-card-header>  
-        <md-card-content class ="md-caption">
+        <md-card-content class ="md-caption card3">
           <md-chips md-max-chips="5" ng-model="myPicks" readonly="ctrl.readonly" md-on-remove="ctrl.removeChipFire($chip, $index)">
            <input disabled/>
             <md-chip-template ng-class="{'played': $chip.played}" my-chip>
@@ -130,7 +131,7 @@
         </md-card-content>
       </md-card>
       <md-card ng-repeat="item in otherPicks" ng-show="item.picks.length != 0">
-        <md-card-header md-colors="::{backgroundColor: 'default-accent-500'}">
+        <md-card-header md-colors="::{backgroundColor: 'default-primary-500'}">
           <md-card-header-text>
             <span class="md-title">
             <div layout = 'row' layout-align="space-between end">

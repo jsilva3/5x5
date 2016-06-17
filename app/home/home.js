@@ -32,7 +32,7 @@ function HomeCtrl ($timeout, $q, $log, $location, $scope, $rootScope, $firebaseA
   };
 
     $scope.imagePath = "img/cardHeader3.jpg";
-    $scope.imageBetaPath = "img/betabadge.svg";
+    $scope.imageBetaPath = "img/betabadge2.svg";
     //var showid = "20160622";
     var self = this;
     $scope.songData = [];
@@ -219,6 +219,8 @@ function createNewGame() {
 };
     function registerUser(uid, showid) {
             //var newUserKey = firebase.database().ref().child("games").push().key;
+            var updates = {};
+            var newPostKey = firebase.database().ref().child("/users/" + $scope.uid + "/" + showid).push().key;
             var ref = firebase.database().ref("games/" +game);
               ref.once("value")
                 .then(function(snapshot) {
@@ -232,7 +234,17 @@ function createNewGame() {
                       timestamp: Date.now(),
                       showid: showid
                     };
-                  return firebase.database().ref("/games/" + game + "/" + $scope.uid).update(addData);
+                      var addData2 = {
+                      gameid: game,
+                      timestamp: Date.now(),
+                      showid: showid,
+                      date_abrev: showid.toString().substring(4,6) + "/" + showid.toString().substring(6,8)  
+                    };  
+                    //figure out why this overwrites name
+                    updates["/users/" + $scope.uid + "/" + showid + "/" + game] = addData2;
+                   // updates["/games/" + game + "/" + $scope.uid] = addData;
+                   firebase.database().ref().update(updates);
+                 firebase.database().ref("/games/" + game + "/" + $scope.uid).update(addData);
                   }else {
                     $location.path("/newGame");
                   };
@@ -302,7 +314,7 @@ self.removeChipFire = removeChipFire;
           };
          });
      });
-     bindSongs($scope.uid);
+     bindSongs($scope.uid, $scope.showidnew.showid);
     };
  ///
  ////function to add songs to current game picks
@@ -319,7 +331,7 @@ self.addSongFire = addSongFire;
                 song: pick,
                 songandgameid: pick + "_" + game,
                 songandshowid: pick + "_" + $scope.showidnew.showid,
-                played: !!Math.floor(Math.random() * 2),
+                played: false,
                 timestamp: Date.now()  
               };
       var updates = {};
