@@ -22,7 +22,7 @@
       <div>
       </div>
       <div>
-         <span class="md-title">Phish | 5 for 5</span>
+         <span class="md-title">Phish Show | 5 for 5 | <img ng-src="{{imageBetaPath}}" height="32" class="imagebeta"></span>
       </div>
       <div>
       </div>
@@ -36,14 +36,14 @@
               <div class = "image">
               <img ng-src="{{imagePath}}" class="md-card-image" alt="Card Header">
               <div class="overlay">
-                Next Show:
-              <br>June 22nd, 2016
-              <br>@ Xcel Energy Center</div>
+              Next Show:
+              <br>{{nextShow[0].date_text}}
+              <br>@ {{nextShow[0].venue}}</div>
             </div>
             <md-card-content>
                 <div layout = "column" layout-align ="center center">
                     <div class = "newgame">
-                <md-button class="md-raised md-accent md-hue-2" type="submit" ng-click="ctrl.newGame()"><i class="material-icons">open_in_new</i> Launch New Game</md-button>
+                <md-button class="md-raised md-accent md-hue-2" type="submit" ng-click='ctrl.newGame(nextShow[0].showid)'><i class="material-icons">open_in_new</i> Launch New Game</md-button>
                 </div> 
                 <div>
                   <span class = "md-title">-OR-</span>
@@ -54,7 +54,7 @@
                   <label>Your Games</label>
                    <md-select ng-model="ctrl.userGame">
                     <md-option ng-repeat="game in currentGames" value="{{game.game}}">
-                    Game {{game.num}}
+                    Game {{game.num}} ({{game.date_abrev}})
                   </md-option>
                  </md-select>
                 </md-input-container>                           

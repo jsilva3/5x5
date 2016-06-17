@@ -32,7 +32,8 @@ function HomeCtrl ($timeout, $q, $log, $location, $scope, $rootScope, $firebaseA
   };
 
     $scope.imagePath = "img/cardHeader3.jpg";
-    var showid = "20160622";
+    $scope.imageBetaPath = "img/betabadge.svg";
+    //var showid = "20160622";
     var self = this;
     $scope.songData = [];
   $scope.options = {
@@ -127,7 +128,7 @@ console.log();
     };
 
 //self.bindSongs = bindSongs;
- function bindSongs(uid){
+ function bindSongs(uid, showid){
     var mysongs = [];
     var gameanduserid = game + "_" + uid;
     //console.log(gameanduserid)
@@ -162,7 +163,13 @@ console.log();
               //todo - move my pick here
                 var playerNameref = firebase.database().ref("games/" + game + "/" + player.player)
                 var syncObject = $firebaseObject(playerNameref);
-                syncObject.$bindTo($scope, "playerFire");
+                syncObject.$bindTo($scope, "playerFire").then(function(x) {
+                  console.log("Success player");
+                  getShowDetails($scope.playerFire.showid);
+                }).catch(function(error) {
+                  console.error("Error:", error);
+                });
+                //var getshowid = getShowDetails(temp.showid);
              
          }else {
                 var allPicksRef = firebase.database().ref("picks/" + showid);
@@ -180,13 +187,24 @@ console.log();
                 };
                 $scope.otherPicks = arr;         
          };
-         
        });
-
     //console.log($scope.otherPicks);
     //console.log($scope.players2);
     });
-   
+   ////load show details
+
+   function getShowDetails(showid) {
+      if (!showDetailsRef) {
+          var showDetailsRef = firebase.database().ref("shows/" + showid);
+            $scope.showDetails = $firebaseObject(showDetailsRef);  
+            $scope.showDetails.$loaded().then(function(x) {
+              console.log("Success");
+              //console.log($scope.showDetails);
+            }).catch(function(error) {
+            console.error("Error:", error);
+           });
+          };
+        };
  };
   
 //for new game logic
@@ -199,7 +217,7 @@ function createNewGame() {
     numPlayers: "1"
   });
 };
-    function registerUser(uid) {
+    function registerUser(uid, showid) {
             //var newUserKey = firebase.database().ref().child("games").push().key;
             var ref = firebase.database().ref("games/" +game);
               ref.once("value")
@@ -211,7 +229,8 @@ function createNewGame() {
                       var updates = {};
                       var addData = {
                       player: $scope.uid,
-                      timestamp: Date.now()  
+                      timestamp: Date.now(),
+                      showid: showid
                     };
                   return firebase.database().ref("/games/" + game + "/" + $scope.uid).update(addData);
                   }else {
@@ -231,7 +250,7 @@ self.updatePlayed = updatePlayed;
             var obj = {};
             obj["player"] = $scope.uid;
             var updates = {};
-            var songandshowid = song + "_" + showid;
+            var songandshowid = song + "_" + $scope.showidnew.showid;
             var addDataTrue = {
                 played: true,
                 timestamp: Date.now()  
@@ -241,13 +260,13 @@ self.updatePlayed = updatePlayed;
                 timestamp: Date.now()  
               };
               console.log(song);
-            var songsRefQuery = firebase.database().ref("picks/" + showid);
+            var songsRefQuery = firebase.database().ref("picks/" + $scope.showidnew.showid);
               songsRefQuery
                 .orderByChild("song")
                 .equalTo(song)
                 .once("value", function(snapshot) {
                     snapshot.forEach(function(childSnapshot) {
-                      var songsRefQuery = firebase.database().ref("picks/" + showid + "/" + childSnapshot.key);
+                      var songsRefQuery = firebase.database().ref("picks/" + $scope.showidnew.showid + "/" + childSnapshot.key);
                       //console.log(snapshot.val().played);
                       if (childSnapshot.val().played) {
                         songsRefQuery.update(addDataFalse);
@@ -263,14 +282,14 @@ self.updatePlayed = updatePlayed;
 self.removeChipFire = removeChipFire;
     function removeChipFire(chip,index) {
       console.log(chip, index);
-      var ref2 = firebase.database().ref("picks/" + showid);
+      var ref2 = firebase.database().ref("picks/" + $scope.showidnew.showid);
       ref2
         .orderByChild("gameid")
         .startAt(game).endAt(game)
         .once("value", function(snapshot) {
           angular.forEach(snapshot.val(),function(pick,key){
            if ((pick.song == chip.song) && (pick.uid == $scope.uid)) {  
-              var ref2 = firebase.database().ref("picks/" + showid + "/" + key);
+              var ref2 = firebase.database().ref("picks/" + $scope.showidnew.showid + "/" + key);
               ref2.remove()
                .then(function() {
                console.log("Remove succeeded.")
@@ -292,19 +311,19 @@ self.addSongFire = addSongFire;
     function addSongFire(pick, uid) {
       //console.log(pick, uid);
       if ($scope.myPicks.length < 5) {
-      var newPostKey = firebase.database().ref().child("picks" + "/" + showid).push().key;
+      var newPostKey = firebase.database().ref().child("picks" + "/" + $scope.showidnew.showid).push().key;
       var addData = {
                 uid: uid,
                 gameid: game,
                 gameanduserid: game + "_" + uid,
                 song: pick,
                 songandgameid: pick + "_" + game,
-                songandshowid: pick + "_" + showid,
+                songandshowid: pick + "_" + $scope.showidnew.showid,
                 played: !!Math.floor(Math.random() * 2),
                 timestamp: Date.now()  
               };
       var updates = {};
-      updates["/picks/" + "/" + showid + "/" + newPostKey] = addData;
+      updates["/picks/" + "/" + $scope.showidnew.showid + "/" + newPostKey] = addData;
       return firebase.database().ref().update(updates);
       }
       else{
@@ -394,8 +413,20 @@ firebase.auth().onAuthStateChanged(function(user) {
     var isAnonymous = user.isAnonymous;
     $rootScope.uid = user.uid;
     console.log("user is signed in " + JSON.stringify($scope.uid) );
-    bindSongs($scope.uid);
-    registerUser($scope.uid);
+// get showid 
+//new game key
+        var getShowIdRef = firebase.database().ref("/gameshow/" + game + "/");
+        $scope.showidnew = $firebaseObject(getShowIdRef);  
+        $scope.showidnew.$loaded().then(function(x) {
+        console.log("Success" + $scope.showidnew.showid);
+        bindSongs($scope.uid, $scope.showidnew.showid);
+        registerUser($scope.uid, $scope.showidnew.showid);
+        //console.log ($scope.showidnew.showid + "safasdf");
+        }).catch(function(error) {
+        console.error("Error:", error);
+        });
+
+
     // ...
   } else {
      console.log("user is not signed in")

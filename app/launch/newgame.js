@@ -15,8 +15,9 @@ angular.module('myApp.newgame', ['ngRoute','firebase'])
 function newGameCtrl($timeout, $q, $scope, $location, $firebaseArray,$firebaseObject) {
     var self = this;
     $scope.imagePath = "img/cardHeader3.jpg";
+    $scope.imageBetaPath = "img/betabadge.svg";
     $scope.test = 1;
-    var showid = "20160622";
+    var showid = '';
 
     self.nextShow2 = '';
     $scope.gameCount = 0;
@@ -26,39 +27,21 @@ function newGameCtrl($timeout, $q, $scope, $location, $firebaseArray,$firebaseOb
 function getNextShow(uid) {
            var tempObj = {};  
            var uid = uid;
- var nextShowRef = firebase.database().ref("/shows/").orderByChild("time").startAt(Date.now()).limitToFirst(1);
- var syncObject = $firebaseObject(nextShowRef);  
- var ref99 = firebase.database().ref("/shows/");
-              ref99
-              .orderByChild("time")
-              .startAt(Date.now())
-              .limitToFirst(1)
-                .once("value")
-                .then(function(snapshot) {
-                    var showFound = snapshot.exists();  
-                    if (showFound) {
-                        var arr= [];
-                      snapshot.forEach(function(childSnapshot) {
-                      tempObj= {
-                      date_text: childSnapshot.val().date_text,
-                      time: childSnapshot.val().time,
-                      venue: childSnapshot.val().venue,
-                      showid: childSnapshot.val().showid }
-                      arr.push(tempObj);
-                      $scope.nextShow = tempObj;
-                      });
-   
-                  }else {
-                    console.log("show not found")
-                  };
-                  },function(error) {
-                    // The Promise was rejected.
-                    console.error(error);
-                  });
+  var nextShowRef = firebase.database().ref("/shows/").orderByChild("time").startAt(Date.now()+18000000).limitToFirst(2);
+  $scope.nextShow = $firebaseArray(nextShowRef);  
+  $scope.nextShow.$loaded().then(function(x) {
+  console.log("Success");
+   showid = $scope.nextShow[0].showid;
+    console.log (showid + "hererere");
+    loadGames($scope.uid, showid);
+    }).catch(function(error) {
+  console.error("Error:", error);
+    });
+    //syncObject.$bindTo($scope, "nextShow6");
 };
 
 //current games
-function loadGames(uid) {
+function loadGames(uid, showid) {
    var tempObj = {};
    
 var currentGamesRef = firebase.database().ref("users/" + $scope.uid + "/" + showid);
@@ -68,7 +51,7 @@ var currentGamesRef = firebase.database().ref("users/" + $scope.uid + "/" + show
          angular.forEach(snapshot.val(),function(games,key){  
            $scope.gameCount +=1;
            
-           tempObj = ({game: games.gameid,num: $scope.gameCount});
+           tempObj = ({game: games.gameid,num: $scope.gameCount, date_abrev: games.date_abrev});
            //console.log(tempObj);
            arr.push(tempObj);
            console.log($scope.gameCount);
@@ -84,7 +67,7 @@ var currentGamesRef = firebase.database().ref("users/" + $scope.uid + "/" + show
 };
 
  self.newGame = newGame; 
-  function newGame(uid) {
+  function newGame(showid) {
     if ($scope.gameCount < 4) {
         var newGameKey = firebase.database().ref().child("games").push().key;
         var newPostKey = firebase.database().ref().child("/users/" + $scope.uid + "/" + showid).push().key;
@@ -93,18 +76,24 @@ var currentGamesRef = firebase.database().ref("users/" + $scope.uid + "/" + show
         var updates = {};
         var addData = {
             player: $scope.uid,
-            timestamp: Date.now()  
+            timestamp: Date.now(),  
+            showid: showid
             };
             console.log("new game created");
         var addData2 = {
             gameid: newGameKey,
-            timestamp: Date.now()  
-            };   
+            timestamp: Date.now(),
+            showid: showid,
+            date_abrev: showid.toString().substring(4,6) + "/" + showid.toString().substring(6,8)  
+            };  
+        var addData3 = {  
+            showid: showid }; 
 
         $scope.game = newGameKey;     
         //firebase.database().ref("/games/" + newGameKey + "/" + $scope.uid).update(addData);
-  
+        //updates["/games/" + newGameKey + "/"] = addData3;
         updates["/games/" + newGameKey + "/" + $scope.uid] = addData;
+        updates["/gameshow/" + newGameKey] = addData3;
         updates["/users/" + $scope.uid + "/" + showid + "/" + newPostKey] = addData2;
         firebase.database().ref().update(updates);
         //changeView
@@ -137,8 +126,8 @@ $scope.init = function () {
     var isAnonymous = user.isAnonymous;
     $scope.uid = user.uid;
     console.log("user is signed in " + JSON.stringify($scope.uid) );
-    loadGames($scope.uid);
-    //getNextShow($scope.uid);
+    //loadGames($scope.uid);
+    getNextShow($scope.uid);
     
     //registerUser($scope.uid);
     // ...
