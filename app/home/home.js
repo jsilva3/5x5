@@ -87,7 +87,6 @@ function HomeCtrl ($timeout, $q, $log, $location, $scope, $rootScope, $firebaseA
       console.error('Error!', err);
   };
 
-
 function myFunction(song) {
        var promise = 
            songService.getSong();
@@ -100,8 +99,6 @@ function myFunction(song) {
               $log.error('failure loading songs', errorPayload);
           });
      };
-
-console.log();
 
     self.readonly = false;
     self.removable = true;
@@ -187,12 +184,10 @@ console.log();
                 };
                 $scope.otherPicks = arr;         
          };
-       });
-    //console.log($scope.otherPicks);
-    //console.log($scope.players2);
+       });  
     });
-   ////load show details
 
+   ////load show details
    function getShowDetails(showid) {
       if (!showDetailsRef) {
           var showDetailsRef = firebase.database().ref("shows/" + showid);
@@ -287,8 +282,6 @@ self.updatePlayed = updatePlayed;
                       };
                     });
                 });
-    
-
       };
 
 self.removeChipFire = removeChipFire;

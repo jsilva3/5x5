@@ -24,7 +24,7 @@
         </md-button>
       </div>
       <div>
-         <span class="md-title"><a href="#/newGame">Phish Show | 5 for 5<img ng-src="{{imageBetaPath}}" height="30" class="imagebeta"></a></span>
+         <span class="md-title"><a href="#/newgame">Phish Show | 5 for 5<img ng-src="{{imageBetaPath}}" height="30" class="imagebeta"></a></span>
         
       </div>
       <div>
@@ -52,7 +52,7 @@
            <form ng-submit="$event.preventDefault()">
            <div layout="row" layout-align="center end">
              <div flex="85"><h3>What songs will be played tonight?</h3></div>
-             <div><md-switch class="md-primary" ng-model="options.hideOld" aria-label="hide songs"><span class="md-caption">rare <md-icon md-svg-icon="img/ic_music_note_black_18px.svg"></md-icon></span></md-switch></div>
+             <div><md-switch class="md-accent" ng-model="options.hideOld" aria-label="hide songs"><span class="md-caption">rare <md-icon md-svg-icon="img/ic_music_note_black_18px.svg"></md-icon></span></md-switch></div>
            </div>
             
             <div layout="row" layout-align="center end">
@@ -94,11 +94,6 @@
           </div>
           </div>
           <br/>
-      <!--<md-checkbox ng-model="ctrl.simulateQuery">Simulate query for results?</md-checkbox>
-      <md-checkbox ng-model="ctrl.noCache">Disable caching of queries?</md-checkbox>
-      <md-checkbox ng-model="ctrl.isDisabled">Disable the input?</md-checkbox>
-      <p>By default, <code>md-autocomplete</code> will cache results when performing a query.  After the initial call is performed, it will use the cached results to eliminate unnecessary server requests or lookup logic. This can be disabled above.</p>
-      -->
           </form>
         </md-card-content>
       </md-card>
@@ -106,7 +101,7 @@
   </div>
     <div>
       <md-card >
-        <md-card-header md-colors="::{backgroundColor: 'default-primary-800'}">
+        <md-card-header class ="cardheader" md-colors="::{backgroundColor: 'default-primary-800'}">
          <md-card-header-text>
             <span class="md-title">
             <div layout = 'row' layout-align="space-between end">
@@ -131,7 +126,7 @@
         </md-card-content>
       </md-card>
       <md-card ng-repeat="item in otherPicks" ng-show="item.picks.length != 0">
-        <md-card-header md-colors="::{backgroundColor: 'default-primary-500'}">
+        <md-card-header class ="cardheader" md-colors="::{backgroundColor: 'default-primary-500'}">
           <md-card-header-text>
             <span class="md-title">
             <div layout = 'row' layout-align="space-between end">
@@ -141,7 +136,7 @@
              </span>
         </md-card-header-text>
         </md-card-header>  
-        <md-card-content class ="md-caption">
+        <md-card-content class ="md-caption card3">
           <md-chips ng-model="item.picks" readonly=true>
            <input disabled />
             <md-chip-template ng-class="{'played': $chip.played}" my-chip>

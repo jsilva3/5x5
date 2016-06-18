@@ -23,7 +23,7 @@ min-width:100px;
 }
 
 .style3 {
-	border-top: 1px dashed #8c8b8b;
+	border-top: 1px dashed #1DE9B6;
 }
 md-button {
   text-align: center;
@@ -31,7 +31,8 @@ md-button {
 .material-icons {
   position: relative; 
   right: 0px; 
-  bottom: -7px
+  bottom: -7px;
+  font-size: 18px; 
 }
 md-input-container:not(.md-input-invalid).md-input-focused .md-input {
     border-color: #1DE9B6;
@@ -147,15 +148,33 @@ display: none;
   right: 8px; 
   bottom: 5px;}
 
+
 .borderbar {
   background-color: #9FA8DA;
 }
 .card2  {
   padding-top: 0px;
-
   padding-bottom: 8px;
 }
 
 .card3  {
   padding-top: 8px;
 }
+
+.cardheader {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.cardheaderNewGame {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.tools1 {
+  max-height: 42px;
+}
+
+.cardheight {
+  line-height: 135%;
+}
+

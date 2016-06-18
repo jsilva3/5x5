@@ -11,5 +11,9 @@
   "shows": {
     ".write": false,
     ".indexOn": ["time"]
-  }
+  },
+    "users": {
+    "$uid": {
+      ".indexOn": ["showid"]}
+    }
 }

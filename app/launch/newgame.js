@@ -12,54 +12,54 @@ angular.module('myApp.newgame', ['ngRoute','firebase'])
 
 .controller('newGameCtrl', newGameCtrl); 
 
-function newGameCtrl($timeout, $q, $scope, $location, $firebaseArray,$firebaseObject) {
+function newGameCtrl($timeout, $q, $scope, $location, $firebaseArray,$firebaseObject,$mdToast) {
     var self = this;
     $scope.imagePath = "img/cardHeader3.jpg";
     $scope.imageBetaPath = "img/betabadge2.svg";
+    $scope.imageCopyPath = "img/contentcopy.svg";
     $scope.test = 1;
     var showid = '';
-
-    self.nextShow2 = '';
     $scope.gameCount = 0;
     $scope.userGames = '';
 
      
 function getNextShow(uid) {
+  //load next show from "shows/" 
            var tempObj = {};  
            var uid = uid;
-  var nextShowRef = firebase.database().ref("/shows/").orderByChild("time").startAt(Date.now()+18000000).limitToFirst(2);
+  var nextShowRef = firebase.database().ref("/shows/").orderByChild("time").startAt(Date.now()+21600000).limitToFirst(2);
   $scope.nextShow = $firebaseArray(nextShowRef);  
   $scope.nextShow.$loaded().then(function(x) {
   console.log("Success");
-   showid = $scope.nextShow[0].showid;
-    console.log (showid + "hererere");
+  showid = $scope.nextShow[0].showid;
+      //console.log (showid + "hererere");
     loadGames($scope.uid, showid);
     }).catch(function(error) {
-  console.error("Error:", error);
+      console.error("Error:", error);
     });
-    //syncObject.$bindTo($scope, "nextShow6");
 };
 
 //current games
 function loadGames(uid, showid) {
    var tempObj = {};
-   
-var currentGamesRef = firebase.database().ref("users/" + $scope.uid + "/" + showid);
+   var currentGamesRef = firebase.database().ref("users/" + $scope.uid);
     currentGamesRef
+      .orderByChild("showid")
+      .limitToLast(2)
       .on("value", function(snapshot) {
          var arr = [];
-         angular.forEach(snapshot.val(),function(games,key){  
-           $scope.gameCount +=1;
-           
+         //console.log (snapshot.val());
+        angular.forEach(snapshot.val(),function(showdays,key){  
+         angular.forEach(showdays,function(games,key){  
+           $scope.gameCount +=1;         
            tempObj = ({game: games.gameid,num: $scope.gameCount, date_abrev: games.date_abrev});
            //console.log(tempObj);
            arr.push(tempObj);
-           console.log($scope.gameCount);
-
+           //console.log($scope.gameCount);
          });
            $scope.currentGames = arr;
-           console.log ($scope.currentGames);         
-         // console.log ($scope.userGames);
+           //console.log ($scope.currentGames);  
+        });       
       });  
      // console.log ($scope.userGames);                      
   // this.userGames = ('Game1 Game2 Game3 ').split(' ').map(function (game) { return { text: game }; });
@@ -68,7 +68,7 @@ var currentGamesRef = firebase.database().ref("users/" + $scope.uid + "/" + show
 
  self.newGame = newGame; 
   function newGame(showid) {
-    if ($scope.gameCount < 4) {
+    if ($scope.gameCount < 8) {
         var newGameKey = firebase.database().ref().child("games").push().key;
         var newPostKey = firebase.database().ref().child("/users/" + $scope.uid + "/" + showid).push().key;
         var obj = {};
@@ -97,23 +97,55 @@ var currentGamesRef = firebase.database().ref("users/" + $scope.uid + "/" + show
        // updates["/users/" + $scope.uid + "/" + showid + "/" + newPostKey] = addData2;
         firebase.database().ref().update(updates);
         //changeView
-        
-            $location.path("/home/" + newGameKey); // path not hash
+        $location.path("/home/" + newGameKey); // path not hash
   }else {
-    console.log("games are full");
+    console.log("allow 8 games for every 2 shows");
+    $scope.showSimpleToast("Maxium 8 games for every two shows.");
   };
 };
 
 self.gotoGame = gotoGame;
 function gotoGame(gameid) {
   if (gameid) {
-
-  $location.path("/home/" + gameid); // path not 
+    $location.path("/home/" + gameid); // path not 
   }else {
     console.log($scope.currentGames[1]);
     console.log("no gameid");
   }
 };
+//toast code
+  var last = {
+    bottom: true,
+    top: false,
+    left: true,
+    right: false
+  };
+  $scope.toastPosition = angular.extend({},last);
+  $scope.getToastPosition = function() {
+    sanitizePosition();
+    return Object.keys($scope.toastPosition)
+      .filter(function(pos) { return $scope.toastPosition[pos]; })
+      .join(' ');
+  };
+  function sanitizePosition() {
+    var current = $scope.toastPosition;
+    if ( current.bottom && last.top ) current.top = false;
+    if ( current.top && last.bottom ) current.bottom = false;
+    if ( current.right && last.left ) current.left = false;
+    if ( current.left && last.right ) current.right = false;
+    last = angular.extend({},current);
+  }
+  $scope.showSimpleToast = function(toastText) {
+    var pinTo = $scope.getToastPosition();
+    $mdToast.show(
+      $mdToast.simple()
+        .textContent(toastText)
+        .position('bottom center')
+        .hideDelay(3500)
+    );
+  };
+
+
 
 
 //init
