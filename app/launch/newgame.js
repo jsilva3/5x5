@@ -87,7 +87,8 @@ function loadGames(uid, showid) {
             date_abrev: showid.toString().substring(4,6) + "/" + showid.toString().substring(6,8)  
             };  
         var addData3 = {  
-            showid: showid }; 
+            showid: showid,
+            time: $scope.nextShow[0].time}; 
 
         $scope.game = newGameKey;     
         //firebase.database().ref("/games/" + newGameKey + "/" + $scope.uid).update(addData);
