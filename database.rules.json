@@ -3,7 +3,7 @@
   ".write": true,
   "picks": {
     "$showid": {
-      ".indexOn": ["gameid","uid","gameanduserid","song"]}
+      ".indexOn": ["gameid","uid","gameanduserid","song", "songmatch"]}
     },
   "games": {
     ".write": "!data.exists()"

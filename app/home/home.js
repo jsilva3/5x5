@@ -327,11 +327,13 @@ self.addSongFire = addSongFire;
       //console.log(pick, uid);
       if ($scope.myPicks.length < 5) {
       var newPostKey = firebase.database().ref().child("picks" + "/" + $scope.showidnew.showid).push().key;
+      var songMatch = pick.toLowerCase();
       var addData = {
                 uid: uid,
                 gameid: game,
                 gameanduserid: game + "_" + uid,
                 song: pick,
+                songmatch: songMatch,
                 songandgameid: pick + "_" + game,
                 songandshowid: pick + "_" + $scope.showidnew.showid,
                 played: false,
