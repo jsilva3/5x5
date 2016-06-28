@@ -108,8 +108,7 @@ function myLoad(){
           console.log("here");
 };
 ///////////
-
-
+    //$scope.hideText = true;
     self.readonly = false;
     self.removable = true;
     self.songPicks = this;
@@ -135,11 +134,13 @@ function myLoad(){
 
 function picksActive() {
   if ($scope.showidnew.time < Date.now()) {
-    //show has not started
-    self.readonly = true;  
-  }else{
     //show has started
+    self.readonly = true;
+    $scope.hideText = false;  
+  }else{
+    //show has not started
     self.readonly = false; 
+    $scope.hideText = true; 
 }};
 
 //self.bindSongs = bindSongs;
@@ -202,7 +203,7 @@ function picksActive() {
                 };
                 $scope.otherPicks = arr;         
          };
-         var temp = picksActive();
+         //var temp = picksActive();
        });  
     });
 
@@ -396,10 +397,10 @@ self.addSongFire = addSongFire;
       var lowercaseQuery = angular.lowercase(query);
       return function filterFn(item) {
         if (!$scope.options.hideOld) {
-          return ((item.song_name.indexOf(lowercaseQuery) === 0 && parseInt(item.gap_shows) <= 150));
+          return ((item.song_name.indexOf(lowercaseQuery) >= 0 && parseInt(item.gap_shows) <= 150));
         }
         else{
-          return item.song_name.indexOf(lowercaseQuery) === 0
+          return item.song_name.indexOf(lowercaseQuery) >= 0
         };
       };
     }

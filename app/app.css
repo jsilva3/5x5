@@ -11,9 +11,12 @@
 .md-scroll-mask { position: initial;}
 
 md-chip.ng-scope._played {
-  background: #1DE9B6!important;
-  color: black !important;
+  background: #1DE9B6 !important;
 }
+md-chip.ng-scope._hidetext {
+  color: transparent; 
+}
+
 .title1 {
   margin: 8px;
 }
@@ -178,3 +181,76 @@ display: none;
   line-height: 135%;
 }
 
+@-webkit-keyframes zoomIn {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes zoomOut {
+    from {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes zoomOut {
+    from {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.md-chip.ng-enter {
+    -webkit-animation-name: zoomIn;
+    animation-name: zoomIn;
+    
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation: zoomIn 1s;
+    animation: zoomIn 1s;
+}
+
+.md-chip.ng-leave {
+    -webkit-animation-name: zoomOut;
+    animation-name: zoomOut;
+    
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}

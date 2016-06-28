@@ -1,4 +1,4 @@
-/*global todomvc */
+/*global homeMVC */
 'use strict';
 
 myApp.directive('enterSubmit', function () {
