@@ -7,7 +7,8 @@ var myApp = angular.module('myApp', [
     'ngAnimate',
     'firebase',
     'myApp.home',
-    'myApp.newgame'           // Newly added home module
+    'myApp.newgame',
+    'myApp.setlist'           // Newly added home module
 ]).
 config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     // Set defualt view of our app to home
@@ -17,7 +18,27 @@ config(['$routeProvider', '$locationProvider', function($routeProvider, $locatio
     });
 
 }])
-
+.animation('.fade', function() {
+  return {
+    enter: function(element, done) {
+      element.css('display', 'none');
+      $(element).fadeIn(1000, function() {
+        done();
+      });
+    },
+    leave: function(element, done) {
+      $(element).fadeOut(1000, function() {
+        done();
+      });
+    },
+    move: function(element, done) {
+      element.css('display', 'none');
+      $(element).slideDown(500, function() {
+        done();
+      });
+    }
+  }
+})
 .config(function($mdThemingProvider) {
    $mdThemingProvider.theme('default')
     .primaryPalette('blue-grey')
@@ -25,5 +46,6 @@ config(['$routeProvider', '$locationProvider', function($routeProvider, $locatio
   $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
 
 });
+
 
  

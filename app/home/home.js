@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase', 'angular-clipboard'])
+var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase','angular-clipboard','ngAnimate'])
  
 // Declared route 
 .config(['$routeProvider', function($routeProvider) {
@@ -160,6 +160,10 @@ function picksActive() {
         //console.log(index);
         $scope.myPicks.$remove(index);
       };
+  //watch
+  var unwatch = $scope.myPicks.$watch(function() {
+    console.log("data changed!");
+  });
     
    //players
     var allPlayersRef = firebase.database().ref("games/" + game);

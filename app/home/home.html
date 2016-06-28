@@ -116,12 +116,11 @@
         </md-card-header-text>
         </md-card-header>  
         <md-card-content class ="md-caption card3">
-          <md-chips md-max-chips="5" ng-model="myPicks" readonly="showDetails.started" md-on-remove="ctrl.removeChipFire($chip, $index)">
+          <md-chips class = "fade" md-max-chips="5" ng-model="myPicks" readonly="showDetails.started" md-on-remove="ctrl.removeChipFire($chip, $index)">
            <input disabled/>
-            <md-chip-template ng-class="{'played': $chip.played}" my-chip>
-            <em>{{$chip.song}}</em>
+            <md-chip-template ng-class="{'played': $chip.played}" my-chip class="fade">
+            <em >{{$chip.song}}</em>
             </md-chip-template>
-
           </md-chips>
         </md-card-content>
       </md-card>
