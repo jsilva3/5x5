@@ -16,23 +16,5 @@
 <body>
     <div ng-controller="setlistCtrl as ctrl" data-ng-init="init()" ng-cloak="">
     Setlist
-      <div class="row">
-    <div class="one-half column offset-by-three">
-      <h1 class="text-center">Groceries</h1>
-      <ul>
-        <li ng-repeat="item in items" class="fade">
-          {{item.name}}
-          <span ng-click="removeItem($index)">X</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="row">
-    <div class="one-half column offset-by-three">
-      <input type="text" ng-model="item.name" />
-      <button class="button-primary" ng-click="addItem()">Add Item</button>
-    </div>
-  </div>
-    </div>
 </body>
 </html>

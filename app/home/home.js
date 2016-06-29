@@ -132,16 +132,17 @@ function myLoad(){
       self.searchText = "";
     };
 
-function picksActive() {
-  if ($scope.showidnew.time < Date.now()) {
-    //show has started
-    self.readonly = true;
-    $scope.hideText = false;  
-  }else{
-    //show has not started
-    self.readonly = false; 
-    $scope.hideText = true; 
-}};
+//replaced by code based on ref(shows)
+//function picksActive() {
+//  if ($scope.showidnew.time < Date.now()) {
+// /   //show has started
+//    self.readonly = true;
+//    $scope.hideText = false;  
+//  }else{
+//    //show has not started
+//    self.readonly = false; 
+//    $scope.hideText = true; 
+//}};
 
 //self.bindSongs = bindSongs;
  function bindSongs(uid, showid){
@@ -161,9 +162,9 @@ function picksActive() {
         $scope.myPicks.$remove(index);
       };
   //watch
-  var unwatch = $scope.myPicks.$watch(function() {
-    console.log("data changed!");
-  });
+  //var unwatch = $scope.myPicks.$watch(function() {
+  //  console.log("data changed!");
+  //});
     
    //players
     var allPlayersRef = firebase.database().ref("games/" + game);

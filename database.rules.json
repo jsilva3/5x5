@@ -9,7 +9,7 @@
     ".write": "!data.exists()"
   },
   "shows": {
-    ".write": false,
+    ".write": true,
     ".indexOn": ["time"]
   },
     "users": {
