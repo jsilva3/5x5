@@ -15,7 +15,6 @@ angular.module('myApp.setlist', ['ngRoute','firebase','ngAnimate'])
 function setlistCtrl($timeout, $q, $log, $scope, $location, $firebaseArray,$firebaseObject) {
     var self = this;
 
-    //for postgres
 
 function loadPlayed() {
   var tempObj = {};
@@ -30,7 +29,7 @@ function loadSongs(showid) {
   console.log("here");
   return;
 };
-
+      $scope.songAdd = "";
       $scope.selectedItem;
       $scope.getSelectedText = function() {
         if ($scope.selectedItem !== undefined) {
@@ -43,6 +42,24 @@ function loadSongs(showid) {
         }
       };
 
+
+$scope.addSong  = function (song) {
+
+  if (song) {
+        // Get the Firebase reference of the item
+        var songAddRef = firebase.database().ref("played/" + $scope.selectedItem + "/" + song);
+        var songLower = song.toLowerCase();
+        var addData = {
+              song: song,
+              songMatch: songLower,
+              played: true,
+              timestamp: Date.now()  
+            };  
+        songAddRef.update(addData);
+        $scope.songAdd = "";
+
+  }
+};
 
 
 $timeout(function() {

@@ -24,8 +24,22 @@
                  {{show.$id}}
                 </md-option>
             </md-select>
-        </md-input-container>       
-        
+        </md-input-container>
+        <md-input-container>
+        <div layout = "row">
+            <div>
+        <input type="text"
+                ng-model="songAdd"
+                placeholder="Add new song"
+                required ng-minlength="3"
+                ng-keyup="($event.keyCode == 13 && todoName.length > 2) ? addSong(songAdd) : return"
+                /> 
+            </div>
+            <div>      
+        <md-button class="md-raised md-accent md-hue-2" type="submit" ng-click="addSong(songAdd)"><i class="material-icons">music_note</i> Add Song</md-button>
+            </div>
+        </div>
+        </md-input-container>
         <md-list>
             <md-list-item class="md-2-line" ng-repeat="songItem in songs">
             <div class="md-list-item-text">
