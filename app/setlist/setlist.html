@@ -17,6 +17,8 @@
     <div ng-controller="setlistCtrl as ctrl" data-ng-init="init()" ng-cloak="">
     <div>
     <md-content>
+        <div layout = "row">
+            <div>
         <md-input-container>
             <label>Shows</label>
               <md-select ng-model="selectedItem" md-selected-text="getSelectedText()">
@@ -26,7 +28,7 @@
             </md-select>
         </md-input-container>
         <md-input-container>
-        <div layout = "row">
+        </div>
             <div>
         <input type="text"
                 ng-model="songAdd"
@@ -39,15 +41,19 @@
         <md-button class="md-raised md-accent md-hue-2" type="submit" ng-click="addSong(songAdd)"><i class="material-icons">music_note</i> Add Song</md-button>
             </div>
         </div>
+            <div flex = "70">
         </md-input-container>
         <md-list>
             <md-list-item class="md-2-line" ng-repeat="songItem in songs">
             <div class="md-list-item-text">
-                <h3>{{songItem.$id}}</h3>  
+                <p>{{songItem.$id}}</p>
+                <md-checkbox class="md-secondary" ng-model="songItem.addIt" ng-click="doAction(songItem.$id, songItem.addIt)"></md-checkbox>  
             </div>
         <md-divider md-inset></md-divider>
         </md-list-item>
         </md-list>
+
+            </div>
     </md-content>
     </div>
 </body>

@@ -29,7 +29,8 @@ function loadSongs(showid) {
   console.log("here");
   return;
 };
-      $scope.songAdd = "";
+       $scope.songAdd = "";
+
       $scope.selectedItem;
       $scope.getSelectedText = function() {
         if ($scope.selectedItem !== undefined) {
@@ -60,7 +61,21 @@ $scope.addSong  = function (song) {
 
   }
 };
+  $scope.doAction = function(song, chkValue) {
+        var songAddRef = firebase.database().ref("played/" + $scope.selectedItem + "/" + song);
+        var addDataTrue = {
+            addIt: true
+          };
+        var addDataFalse = {
+            addIt: false
+          }; 
+        if (!chkValue){
+          songAddRef.update(addDataFalse);
+        }else {
+          songAddRef.update(addDataTrue);
+        };
 
+  };
 
 $timeout(function() {
  console.log ($scope.played);
