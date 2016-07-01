@@ -6,7 +6,7 @@
       ".indexOn": ["gameid","uid","gameanduserid","song", "songmatch"]}
     },
   "games": {
-    ".write": "!data.exists()"
+    ".write": true
   },
   "shows": {
     ".write": true,
@@ -15,5 +15,9 @@
     "users": {
     "$uid": {
       ".indexOn": ["showid"]}
-    }
+  },
+    "played": {
+    "$showid": {
+      ".indexOn": ["addIt"]}
+  }
 }
