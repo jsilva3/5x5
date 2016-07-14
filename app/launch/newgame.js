@@ -49,20 +49,15 @@ function loadGames(uid, showid) {
       .limitToLast(2)
       .on("value", function(snapshot) {
          var arr = [];
-         //console.log (snapshot.val());
         angular.forEach(snapshot.val(),function(showdays,key){  
          angular.forEach(showdays,function(games,key){  
            $scope.gameCount +=1;         
            tempObj = ({game: games.gameid,num: $scope.gameCount, date_abrev: games.date_abrev});
-           //console.log(tempObj);
            arr.push(tempObj);
-           //console.log($scope.gameCount);
          });
            $scope.currentGames = arr;
-           //console.log ($scope.currentGames);  
         });       
-      });  
-     // console.log ($scope.userGames);                      
+      });                   
   // this.userGames = ('Game1 Game2 Game3 ').split(' ').map(function (game) { return { text: game }; });
 
 };
@@ -80,7 +75,6 @@ function loadGames(uid, showid) {
             timestamp: Date.now(),  
             showid: showid
             };
-            console.log("new game created");
         var addData2 = {
             gameid: newGameKey,
             timestamp: Date.now(),
@@ -92,16 +86,12 @@ function loadGames(uid, showid) {
             time: $scope.nextShow[0].time}; 
 
         $scope.game = newGameKey;     
-        //firebase.database().ref("/games/" + newGameKey + "/" + $scope.uid).update(addData);
-        //updates["/games/" + newGameKey + "/"] = addData3;
         updates["/games/" + newGameKey + "/" + $scope.uid] = addData;
         updates["/gameshow/" + newGameKey] = addData3;
-       // updates["/users/" + $scope.uid + "/" + showid + "/" + newPostKey] = addData2;
         firebase.database().ref().update(updates);
         //changeView
         $location.path("/home/" + newGameKey); // path not hash
   }else {
-    console.log("allow 8 games for every 2 shows");
     $scope.showSimpleToast("Maxium 8 games for every two shows.");
   };
 };
@@ -159,14 +149,14 @@ $scope.init = function () {
     
     var isAnonymous = user.isAnonymous;
     $scope.uid = user.uid;
-    console.log("user is signed in " + JSON.stringify($scope.uid) );
+    //console.log("user is signed in " + JSON.stringify($scope.uid) );
     //loadGames($scope.uid);
     getNextShow($scope.uid);
     
     //registerUser($scope.uid);
     // ...
   } else {
-     console.log("user is not signed in")
+    console.log("user is not signed in")
     // User is signed out.
     // ...
   }  // ...

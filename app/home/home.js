@@ -218,7 +218,6 @@ function myLoad(){
           var showDetailsRef = firebase.database().ref("shows/" + showid);
             $scope.showDetails = $firebaseObject(showDetailsRef);  
             $scope.showDetails.$loaded().then(function(x) {
-              console.log("Success");
               //console.log($scope.showDetails);
             }).catch(function(error) {
             console.error("Error:", error);
@@ -259,7 +258,7 @@ function myLoad(){
                   }else {
                     $location.path("/newGame");
                   };
-                    console.log (gameCreated);
+                    //console.log (gameCreated);
 
                   },function(error) {
                     // The Promise was rejected.
@@ -282,7 +281,7 @@ self.updatePlayed = updatePlayed;
                 played: false,
                 timestamp: Date.now()  
               };
-              console.log(song);
+              //console.log(song);
             var songsRefQuery = firebase.database().ref("picks/" + $scope.showidnew.showid);
               songsRefQuery
                 .orderByChild("song")
@@ -290,7 +289,6 @@ self.updatePlayed = updatePlayed;
                 .once("value", function(snapshot) {
                     snapshot.forEach(function(childSnapshot) {
                       var songsRefQuery = firebase.database().ref("picks/" + $scope.showidnew.showid + "/" + childSnapshot.key);
-                      //console.log(snapshot.val().played);
                       if (childSnapshot.val().played) {
                         songsRefQuery.update(addDataFalse);
                       }else{
@@ -319,7 +317,7 @@ self.removeChipFire = removeChipFire;
                console.log("Remove failed: " + error.message)
            });
             }else {
-           //console.log("couldn't find key")
+           console.log("couldn't find key")
           };
          });
      });
@@ -330,7 +328,6 @@ self.removeChipFire = removeChipFire;
  ///
 self.addSongFire = addSongFire;
     function addSongFire(pick, uid) {
-      //console.log(pick, uid);
       if ($scope.myPicks.length < 5) {
       var newPostKey = firebase.database().ref().child("picks" + "/" + $scope.showidnew.showid).push().key;
       var songMatch = pick.toLowerCase();
@@ -350,7 +347,6 @@ self.addSongFire = addSongFire;
       return firebase.database().ref().update(updates);
       }
       else{
-        console.log("picks are full dude"); 
         $scope.showSimpleToast("You have 5 songs! Remove a song if you want to change up your picks.");    
       };
    };
@@ -363,7 +359,6 @@ self.addSongFire = addSongFire;
     self.noCache       = true;
     //self.songs         = myLoadFunction();
     //self.songs         = $scope.songData;
-    //console.log($scope.songData);
     self.querySearch   = querySearch;
     self.selectedItemChange = selectedItemChange;
     self.searchTextChange   = searchTextChange;
