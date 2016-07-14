@@ -75,11 +75,11 @@ function HomeCtrl ($timeout, $q, $log, $location, $scope, $rootScope, $firebaseA
 ////clipboard
   $scope.copySupported = false;
   $scope.locationAbsUrl = $location.absUrl();
-  console.log($location.absUrl());
+  //console.log($location.absUrl());
   //var copyUrl = $location.path();
   $scope.copyTextToCopy =  $scope.locationAbsUrl;
   $scope.copySuccess = function () {
-      console.log('Copied!');
+      //console.log('Copied!');
       $scope.showSimpleToast("Game link copied. Send it to your friends!"); 
   };
   $scope.copyFail = function (err) {
@@ -105,7 +105,6 @@ function myLoad(){
           function(errorPayload) {
               $log.error('failure loading song', errorPayload);
           });
-          console.log("here");
 };
 ///////////
     //$scope.hideText = true;
@@ -148,7 +147,6 @@ function myLoad(){
  function bindSongs(uid, showid){
     var mysongs = [];
     var gameanduserid = game + "_" + uid;
-    //console.log(gameanduserid)
     //tie mypicks to listener to catch delete chip
     var myPicksRef = firebase.database().ref("picks/" + showid);
     var query = myPicksRef
@@ -185,7 +183,7 @@ function myLoad(){
                 var playerNameref = firebase.database().ref("games/" + game + "/" + player.player)
                 var syncObject = $firebaseObject(playerNameref);
                 syncObject.$bindTo($scope, "playerFire").then(function(x) {
-                  console.log("Success player");
+                  //console.log("Success player");
                   getShowDetails($scope.playerFire.showid);
                 }).catch(function(error) {
                   console.error("Error:", error);
@@ -281,7 +279,6 @@ self.updatePlayed = updatePlayed;
                 played: false,
                 timestamp: Date.now()  
               };
-              //console.log(song);
             var songsRefQuery = firebase.database().ref("picks/" + $scope.showidnew.showid);
               songsRefQuery
                 .orderByChild("song")
@@ -300,7 +297,7 @@ self.updatePlayed = updatePlayed;
 
 self.removeChipFire = removeChipFire;
     function removeChipFire(chip,index) {
-      console.log(chip, index);
+      //console.log(chip, index);
       var ref2 = firebase.database().ref("picks/" + $scope.showidnew.showid);
       ref2
         .orderByChild("gameid")
