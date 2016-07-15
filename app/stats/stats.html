@@ -14,7 +14,7 @@
 
 </head>
 <body>
-    <div ng-controller="setlistCtrl as ctrl" data-ng-init="init()" ng-cloak="">
+    <div ng-controller="statsCtrl as ctrl" data-ng-init="init()" ng-cloak="">
     <div>
     <md-content layout-padding>
       <div class = "card1">
@@ -29,22 +29,12 @@
             </md-select>
         </md-input-container>
         <md-input-container>
-        <div layout = "row">
-        <div flex = "65">
-        <input type="text" ng-model="songAdd" placeholder="Add new song" required ng-minlength="3"
-               ng-keyup="($event.keyCode == 13 && todoName.length > 2) ? addSong(songAdd) : return"/> 
-        </div>
-        <div flex = "35">     
-        <md-button class="md-raised md-accent md-hue-2" type="submit" ng-click="addSong(songAdd)"><i class="material-icons">music_note</i> Add Song</md-button>
-        </div></div>
-        </md-input-container>
         <md-card-content class = "card2">
         <md-list>
             <md-list-item class="md-2-line" ng-repeat="songItem in songs">
             <div class="md-list-item-text">
-                <md-checkbox class="md-secondary" ng-disabled="true" ng-model="songItem.added"></md-checkbox>  
-                <p>{{songItem.$id}}</p>
-                <md-checkbox class="md-secondary" ng-model="songItem.addIt" ng-click="doAction(songItem.$id, songItem.addIt)"></md-checkbox>  
+                <p>{{songItem.key}}</p>
+                <span class="md-secondary" > Picked: {{songItem.value}} </span>
             </div>
         <md-divider md-inset></md-divider>
         </md-list-item>

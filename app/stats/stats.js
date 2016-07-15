@@ -18,24 +18,48 @@ function statsCtrl($timeout, $q, $log, $scope, $location, $firebaseArray,$fireba
 
 function loadPlayed() {
   var tempObj = {};
-  var playedRef = firebase.database().ref("played/");
+  var playedRef = firebase.database().ref("picks/");
   return $firebaseArray(playedRef)
 };
 $scope.played = loadPlayed();
 
 function loadSongs(showid) {
-  var songsRef = firebase.database().ref("played/" + showid);
-  $scope.songs = $firebaseArray(songsRef);
+  var songsRef = firebase.database().ref("picks/" + showid);
+  //$scope.songs = $firebaseArray(songsRef);
+  songsRef
+    .on("value", function(snapshot) {
+      snapshot.forEach(function(picks, key) {   
+        console.log (picks.song);
+  
+    });
+  });
+
+     
+    
+   
   return;
 };
-       $scope.songAdd = "";
+
 
       $scope.selectedItem;
       $scope.getSelectedText = function() {
         if ($scope.selectedItem !== undefined) {
           console.log ("You have selected: Item " + $scope.selectedItem);
-          var songsRef = firebase.database().ref("played/" + $scope.selectedItem);
-          $scope.songs = $firebaseArray(songsRef);
+          var songsRef = firebase.database().ref("picks/" + $scope.selectedItem);
+          var songObj = {};
+          // = $firebaseArray(songsRef);
+            songsRef
+              .on("value", function(snapshot) {
+              angular.forEach(snapshot.val(),function(picks,key){    
+              if (!(picks.song in songObj)) {
+                songObj[picks.song] = 0;
+              }
+                songObj[picks.song]++;
+              });
+            });
+          var sortedSongs = sortObject(songObj);
+          $scope.songs = sortedSongs;
+          console.log(sortedSongs);
           return "Show " + $scope.selectedItem;
         } else {
           return "Please select a show";
@@ -43,42 +67,26 @@ function loadSongs(showid) {
       };
 
 
-$scope.addSong  = function (song) {
 
-  if (song) {
-        // Get the Firebase reference of the item
-        var songAddRef = firebase.database().ref("played/" + $scope.selectedItem + "/" + song);
-        var songLower = song.toLowerCase();
-        var addData = {
-              song: song,
-              songMatch: songLower,
-              played: true,
-              timestamp: Date.now()  
-            };  
-        songAddRef.update(addData);
-        $scope.songAdd = "";
-
-  }
-};
-  $scope.doAction = function(song, chkValue) {
-        var songAddRef = firebase.database().ref("played/" + $scope.selectedItem + "/" + song);
-        var addDataTrue = {
-            addIt: true
-          };
-        var addDataFalse = {
-            addIt: false
-          }; 
-        if (!chkValue){
-          songAddRef.update(addDataFalse);
-        }else {
-          songAddRef.update(addDataTrue);
-        };
-
-  };
 
 //$timeout(function() {
 // console.log ($scope.played);
 //},2000);
+
+function sortObject(obj) {
+    var arr = [];
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            arr.push({
+                'key': prop,
+                'value': obj[prop]
+            });
+        }
+    }
+    arr.sort(function(a, b) { return b.value - a.value; });
+    //arr.sort(function(a, b) { a.value.toLowerCase().localeCompare(b.value.toLowerCase()); }); //use this to sort as strings
+    return arr; // returns array
+}
 
 };
 })();
