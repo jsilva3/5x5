@@ -8,7 +8,8 @@ var myApp = angular.module('myApp', [
     'firebase',
     'myApp.home',
     'myApp.newgame',
-    'myApp.setlist'           // Newly added home module
+    'myApp.setlist',
+    'myApp.stats'           // Newly added home module
 ]).
 config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     // Set defualt view of our app to home

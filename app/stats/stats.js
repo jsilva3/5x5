@@ -1,18 +1,18 @@
 (function () {
   'use strict';
 
-angular.module('myApp.setlist', ['ngRoute','firebase','ngAnimate'])
+angular.module('myApp.stats', ['ngRoute','firebase','ngAnimate'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/setlist', {
-    templateUrl: 'setlist/setlist.html',
-    controller: 'setlistCtrl'
+  $routeProvider.when('/stats', {
+    templateUrl: 'stats/stats.html',
+    controller: 'statsCtrl'
   });
 }])
 
-.controller('setlistCtrl', setlistCtrl); 
+.controller('statsCtrl', statsCtrl); 
 
-function setlistCtrl($timeout, $q, $log, $scope, $location, $firebaseArray,$firebaseObject) {
+function statsCtrl($timeout, $q, $log, $scope, $location, $firebaseArray,$firebaseObject) {
     var self = this;
 
 
