@@ -59,7 +59,9 @@ function loadSongs(showid) {
             });
           var sortedSongs = sortObject(songObj);
           $scope.songs = sortedSongs;
-          console.log(sortedSongs);
+          $scope.songs.sum = sum(sortedSongs);
+          $scope.songs.games = Math.round($scope.songs.sum.value / 5);
+          //console.log($scope.songs);
           return "Show " + $scope.selectedItem;
         } else {
           return "Please select a show";
@@ -72,7 +74,13 @@ function loadSongs(showid) {
 //$timeout(function() {
 // console.log ($scope.played);
 //},2000);
+function sum( obj ) {
+  return Object.keys(obj).reduce(function (previous, key) {
+    previous.value += obj[key].value;
+    return previous;
+}, { value: 0 });
 
+};
 function sortObject(obj) {
     var arr = [];
     for (var prop in obj) {
