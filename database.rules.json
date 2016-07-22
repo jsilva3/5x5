@@ -20,7 +20,7 @@
     "$showid": {
       ".indexOn": ["addIt"]}
   },
-  "gameshows": {
+  "gameshow": {
     ".indexOn": ["showid"]
   }
 }
