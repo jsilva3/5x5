@@ -19,8 +19,8 @@ function statsCtrl($timeout, $q, $log, $scope, $location, $firebaseArray,$fireba
 function loadPlayed() {
   var tempObj = {};
   var playedRef = firebase.database().ref("picks/");
-  var query = playedRef.orderByKey();
-  return $firebaseArray(query)
+  var query = playedRef
+  return $firebaseArray(playedRef)
 };
 $scope.played = loadPlayed();
 
@@ -30,15 +30,24 @@ function loadSongs(showid) {
   songsRef
     .on("value", function(snapshot) {
       snapshot.forEach(function(picks, key) {   
-        console.log (picks.song);
+      //  console.log (picks.song);
   
     });
-  });
-
-     
-    
-   
+  });  
   return;
+};
+
+function loadGameCount(showid) {
+  var gamesRef = firebase.database().ref("gameshow/");
+  //$scope.songs = $firebaseArray(songsRef);
+  var count = 0;
+  gamesRef
+    .orderByChild("showid")
+    .equalTo(showid)
+    .on("value", function(snapshot) {
+      count = snapshot.numChildren();  
+  });  
+  return count;
 };
 
 
@@ -46,6 +55,7 @@ function loadSongs(showid) {
       $scope.getSelectedText = function() {
         if ($scope.selectedItem !== undefined) {
           console.log ("You have selected: Item " + $scope.selectedItem);
+          $scope.gameCount = loadGameCount($scope.selectedItem);
           var songsRef = firebase.database().ref("picks/" + $scope.selectedItem);
           var songObj = {};
           // = $firebaseArray(songsRef);

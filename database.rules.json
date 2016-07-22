@@ -19,5 +19,8 @@
     "played": {
     "$showid": {
       ".indexOn": ["addIt"]}
+  },
+  "gameshows": {
+    ".indexOn": ["showid"]
   }
 }

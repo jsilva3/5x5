@@ -31,15 +31,18 @@
         <md-input-container>
         <md-card-content class = "card2">
             <div layout = row>
-                <div flex = 33>
-                    Picks Total: <b>{{songs.sum.value}}</b>
+                <div flex = 25>
+                    Total: <b>{{songs.sum.value}}</b>
                 </div>
-                <div flex = 33>
-                    Picks Unique: <b>{{songs.length}}</b>
+                <div flex = 25>
+                    Unique: <b>{{songs.length}}</b>
                 </div>
-                <div flex = 33>
-                    Games: <b>{{songs.games}}</b>
-                </div>                
+                <div flex = 25>
+                    Plyrs: <b>{{songs.games}}</b>
+                </div>
+                <div flex = 25>
+                    Gms: <b>{{gameCount}}</b>
+                </div>                  
             </div>              
         <md-list>
             <md-list-item class="md-2-line" ng-repeat="songItem in songs">
