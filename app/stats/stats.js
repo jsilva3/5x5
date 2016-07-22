@@ -19,7 +19,8 @@ function statsCtrl($timeout, $q, $log, $scope, $location, $firebaseArray,$fireba
 function loadPlayed() {
   var tempObj = {};
   var playedRef = firebase.database().ref("picks/");
-  return $firebaseArray(playedRef)
+  var query = playedRef.orderByKey();
+  return $firebaseArray(query)
 };
 $scope.played = loadPlayed();
 
