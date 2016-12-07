@@ -34,9 +34,31 @@ md-button {
 .material-icons {
   position: relative; 
   right: 0px; 
-  bottom: -7px;
-  font-size: 18px; 
+  bottom: -6px;
 }
+.material-icons.note {
+  position: relative; 
+  right: 0px; 
+  bottom: -4px;
+}
+.material-icons.trend {
+  position: relative; 
+  left: -3px; 
+  bottom: -4px;
+}
+.material-icons.md-18.lowColor {font-size: 18px; color:#0091EA;}
+.material-icons.md-18.medColor {font-size: 18px; color: #64DD17;}
+.material-icons.md-18.highColor {font-size: 18px; color: #FFAB00;}
+.material-icons.md-20 {font-size: 20px;}
+.material-icons.md-22 {font-size: 22px;}
+.material-icons.md-24 {font-size: 24px;}
+.material-icons.teal500 {color: #009688;}
+.material-icons.redA400 {color: #FF1744;}
+.material-icons.teal400 {color: #26A69A;}
+
+
+
+
 md-input-container:not(.md-input-invalid).md-input-focused .md-input {
     border-color: #1DE9B6;
     border: 0px;
@@ -93,18 +115,25 @@ md-input-container {
 .autocomplete-custom-template li {
   border-bottom: 1px solid #ccc;
   height: auto;
-  padding-top: 4px;
+  padding-top: 8px;
   padding-bottom: 4px;
-  white-space: normal; }
+  white-space: nowrap;
+  }
 .autocomplete-custom-template li:last-child {
-  border-bottom-width: 0; }
+  border-bottom-width: 0;
+  height: 62px;
+ }
 .autocomplete-custom-template .item-title,
 .autocomplete-custom-template .item-metadata {
   display: block;
-  line-height: 2; }
+  line-height: 2;
+  overflow: auto;
+  text-overflow: ellipsis;}
+
 .autocomplete-custom-template .item-title md-icon {
-  height: 16px;
-  width: 16px; }
+  height: 18px;
+  width: 18px; }
+
 
 .wordwrap { 
    white-space: pre-wrap;      /* CSS3 */   
@@ -144,6 +173,11 @@ display: none;
   position: relative;
   left: 0;
   top: 0;
+
+}
+md-card .md-card-image {
+    width: 100%;
+    height: auto;
 }
 
 .imagebeta { 
@@ -239,6 +273,12 @@ display: none;
     }
 }
 
+.custom-chips md-chips-wrap.md-removable md-chip md-chip-template {
+  padding-right: 5px; }
+.md-chips .md-chip-input-container {
+  width: 0px;
+}
+
 .md-chip.ng-enter {
     -webkit-animation-name: zoomIn;
     animation-name: zoomIn;
@@ -256,3 +296,8 @@ display: none;
     -webkit-animation-duration: 1s;
     animation-duration: 1s;
 }
+
+
+
+
+

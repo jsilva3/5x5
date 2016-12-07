@@ -52,7 +52,7 @@
            <form ng-submit="$event.preventDefault()">
            <div layout="row" layout-align="center end">
              <div flex="85"><h3>What songs will be played tonight?</h3></div>
-             <div><md-switch class="md-accent" ng-model="options.hideOld" aria-label="hide songs"><span class="md-caption">rare <md-icon md-svg-icon="img/ic_music_note_black_18px.svg"></md-icon></span></md-switch></div>
+             <div><md-switch class="md-accent" ng-model="options.hideOld" ><span class="md-caption">rare <i class="material-icons md-18 note">music_note</i></span></md-switch></div>
            </div>
             
             <div layout="row" layout-align="center end">
@@ -70,27 +70,42 @@
               placeholder="Phish Songs"
               md-autoselect = "true"
               md-menu-class="autocomplete-custom-template">
-        <md-item-template>
+        <md-item-template class = "item-template">
           <span class="item-title">
-            <md-icon md-svg-icon="img/ic_music_note_black_18px.svg"></md-icon>
-            <span> {{item.song_name_display}} </span>
+            <strong>
+            <span ng-if="item.frequency=='low'"><i class="material-icons md-18 lowColor note">music_note</i>+{{scoring.low}}</span>
+            <span ng-if="item.frequency=='med'"><i class="material-icons md-18 medColor note">music_note</i>+{{scoring.med}}</span>
+            <span ng-if="item.frequency=='high'"><i class="material-icons md-18 highColor note">music_note</i>+{{scoring.high}}</span>
+            </strong>
+            <span class="overflow-ellipsis"> {{item.song_name_display}} </span>
           </span>
+
           <span class="item-metadata">
+            <span class="item-metastat" ng-if="item.trend=='up'">
+              <strong><i class="material-icons md-18 lowColor trend">trending_up</i></strong>
+            </span>
+            <span class="item-metastat" ng-if="item.trend=='even'">
+              <strong><i class="material-icons md-18 medColor trend">trending_flat</i></strong>
+            </span>
+            <span class="item-metastat" ng-if="item.trend=='down'">
+              <strong><i class="material-icons md-18 highColor trend">trending_down</i></strong>
+            </span>
             <span class="item-metastat">
               <strong>{{item.gap_shows}}</strong> show gap
             </span>
             <span class="item-metastat">
-              <strong>{{item.gap_days}}</strong> day gap
+              <strong>{{item.gap_days}}</strong> day gap 
             </span>
           </span>
         </md-item-template>
         <md-not-found>
-         <span class ="item-metadata"> "{{ctrl.searchText}}" was not found. Turn on rare songs for more choices!</span>
+         <span> "{{ctrl.searchText}}" not found.</span>
+         <span> Turn on rare songs for more choices!</span>
         </md-not-found>
       </md-autocomplete>
           </div>
           <div>
-          <md-button class="md-raised md-accent md-hue-2" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.song_name_display)">Add to List</md-button>
+          <md-button class="md-raised md-accent md-hue-2" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.song_name_display, ctrl.selectedItem.frequency)">Add to List</md-button>
           </div>
           </div>
           <br/>
@@ -109,28 +124,28 @@
             <input class = "my-input" type = "text" enter-submit ng-model="playerFire.name" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }" placeholder="<player name>"/>
             </div>
             <div>
-              ({{ctrl.songPicks.score(myPicks)}}/{{myPicks.length}})
+              ({{ctrl.songPicks.score(myPicks)}}/{{ctrl.songPicks.possiblePoints(myPicks)}})
              </div>
             </div>
             </span>   
         </md-card-header-text>
         </md-card-header>  
         <md-card-content class ="md-caption card3">
-          <md-chips class = "fade" md-max-chips="5" ng-model="myPicks" readonly="showDetails.started" md-on-remove="ctrl.removeChipFire($chip, $index)">
+          <md-chips class = "custom-chips" md-max-chips="5" ng-model="myPicks" readonly="showDetails.started" md-on-remove="ctrl.removeChipFire($chip, $index)">
            <input disabled/>
             <md-chip-template ng-class="{'played': $chip.played}" my-chip class="fade">
-            <em >{{$chip.song}}</em>
+            <em >{{$chip.song}} (+{{$chip.points}})</em>
             </md-chip-template>
           </md-chips>
         </md-card-content>
       </md-card>
-      <md-card ng-repeat="item in otherPicks" ng-show="item.picks.length != 0">
+      <md-card ng-repeat="item in otherPicks | object2Array | orderBy: 'score':true" ng-show="item.picks.length != 0">
         <md-card-header class ="cardheader" md-colors="::{backgroundColor: 'default-primary-500'}">
           <md-card-header-text>
             <span class="md-title">
             <div layout = 'row' layout-align="space-between end">
               <div>{{item.name}}</div>
-              <div> ({{ctrl.songPicks.score(item.picks)}}/{{item.picks.length}})</div>
+              <div> ({{ctrl.songPicks.score(item.picks)}}/{{ctrl.songPicks.possiblePoints(item.picks)}})</div>
              </div>
              </span>
         </md-card-header-text>
@@ -139,7 +154,7 @@
           <md-chips ng-model="item.picks" readonly=true>
            <input disabled />
             <md-chip-template ng-class="{'played': $chip.played, 'hidetext': showDetails.started}" my-chip my-chip-hide >
-            <em>{{$chip.song}}</em>
+            <em >{{$chip.song}} (+{{$chip.points}})</em>
             </md-chip-template>
           </md-chips>
         </md-card-content>

@@ -18,7 +18,19 @@ var homeMVC = angular.module('myApp.home', ['ngRoute','ngMaterial','firebase','a
       }
     }
   })
-
+//test filter
+.filter('object2Array', function() {
+    return function(input) {
+      var out = [];
+      var i;
+      for(i in input){
+        if (input[i].picks){
+        out.push(input[i]);
+        };
+      }
+      return out;
+    }
+  })
 // Home controller
 .controller('HomeCtrl', HomeCtrl); 
 
@@ -113,20 +125,49 @@ function myLoad(){
     self.songPicks = this;
     
     self.songPicks.addPick = addPick;
-    function addPick(pick) {
+    function addPick(pick, frequency) {
+      //this is where i left off trying to add score to firebase
+      //var aScore = lookupScore(frequency);
       if (pick) {
-        addSongFire(pick, $scope.uid);
+        addSongFire(pick, $scope.uid,lookupPoints(frequency));
       };
       self.clear();
     };
     self.songPicks.score = score;
     function score(picks){
       var count =0;
+      var uid;
       angular.forEach(picks, function(pick){
+        //console.log(pick.points);
+        if (typeof pick.points == "undefined") {
         count += pick.played ? 1 : 0;
+        }
+        else {
+        count += pick.played ? pick.points : 0;
+        };
+        uid = pick.uid;
       });
+      var addData = {
+        score: count
+      };
+      //var playerNameref = firebase.database().ref("games/" + game + "/" + uid);
+      if (uid) {
+      firebase.database().ref("/games/" + game + "/" + uid).update(addData);
+      //console.log(count,uid,game);
+      };
       return count;
     };
+    self.songPicks.possiblePoints = possiblePoints;
+    function possiblePoints(picks){
+      var count =0;
+      angular.forEach(picks, function(pick){
+        
+        count += pick.points;
+      });
+    return count;
+    };
+
+
     self.clear = function() {
       self.searchText = "";
     };
@@ -159,10 +200,6 @@ function myLoad(){
         //console.log(index);
         $scope.myPicks.$remove(index);
       };
-  //watch
-  //var unwatch = $scope.myPicks.$watch(function() {
-  //  console.log("data changed!");
-  //});
     
    //players
     var allPlayersRef = firebase.database().ref("games/" + game);
@@ -183,12 +220,10 @@ function myLoad(){
                 var playerNameref = firebase.database().ref("games/" + game + "/" + player.player)
                 var syncObject = $firebaseObject(playerNameref);
                 syncObject.$bindTo($scope, "playerFire").then(function(x) {
-                  //console.log("Success player");
                   getShowDetails($scope.playerFire.showid);
                 }).catch(function(error) {
                   console.error("Error:", error);
                 });
-                //var getshowid = getShowDetails(temp.showid);
              
          }else {
                 var allPicksRef = firebase.database().ref("picks/" + showid);
@@ -197,17 +232,21 @@ function myLoad(){
                 .orderByChild("gameanduserid")
                 .equalTo(gameanduserid);
                 $scope.playerName = player;
-                
-                //console.log($scope.playerName.name);
                 var tempObj = {};
+                var tempPicks = $firebaseArray(query3);
+
                 if ($scope.playerName.timestamp) {
-                tempObj = ({name: $scope.playerName.name, picks:$firebaseArray(query3)});
+                tempObj = ({name: $scope.playerName.name,
+                            picks:tempPicks,
+                            score:$scope.playerName.score});
                 arr.push(tempObj);
                 };
-                $scope.otherPicks = arr;         
+                $scope.otherPicks = arr;   
+                
          };
-         //var temp = picksActive();
-       });  
+       }); 
+       //this is when the arr is complete
+       //console.log($scope.otherPicks); 
     });
 
    ////load show details
@@ -223,6 +262,7 @@ function myLoad(){
           };
         };
  };
+
 // register user
 //  
   function registerUser(uid, showid) {
@@ -323,9 +363,33 @@ self.removeChipFire = removeChipFire;
  ///
  ////function to add songs to current game picks
  ///
+
+
+//function for checking if duplicate song chosen
+function hasValue(arr,song) {
+  return arr.some(function(el) {
+    return el.song === song;
+  }); 
+};
+
+//these two functions dont work yet
+//function hasValue2(obj, value) {
+//  return Object.keys(obj).some((key) => obj[key] == value);
+//};
+
+function lookupPoints(frequency) {
+  var result = 0;
+  angular.forEach($scope.scoring, function(value, key) {
+     if (key === frequency) 
+         result = value; 
+  });
+  return result;
+};
+
 self.addSongFire = addSongFire;
-    function addSongFire(pick, uid) {
-      if ($scope.myPicks.length < 5) {
+    function addSongFire(pick, uid, points) {
+      var existIn = hasValue($scope.myPicks, pick);
+      if (($scope.myPicks.length < 5) && !existIn) {
       var newPostKey = firebase.database().ref().child("picks" + "/" + $scope.showidnew.showid).push().key;
       var songMatch = pick.toLowerCase();
       var addData = {
@@ -333,6 +397,7 @@ self.addSongFire = addSongFire;
                 gameid: game,
                 gameanduserid: game + "_" + uid,
                 song: pick,
+                points: points,
                 songmatch: songMatch,
                 songandgameid: pick + "_" + game,
                 songandshowid: pick + "_" + $scope.showidnew.showid,
@@ -344,7 +409,12 @@ self.addSongFire = addSongFire;
       return firebase.database().ref().update(updates);
       }
       else{
-        $scope.showSimpleToast("You have 5 songs! Remove a song if you want to change up your picks.");    
+        if (!($scope.myPicks.length < 5)) { 
+          $scope.showSimpleToast("You have 5 songs! Remove a song if you want to change up your picks."); 
+        }
+        else {
+          $scope.showSimpleToast("Don't pick the same song twice!"); 
+        };  
       };
    };
 //
@@ -394,7 +464,7 @@ self.addSongFire = addSongFire;
       var lowercaseQuery = angular.lowercase(query);
       return function filterFn(item) {
         if (!$scope.options.hideOld) {
-          return ((item.song_name.indexOf(lowercaseQuery) >= 0 && parseInt(item.gap_shows) <= 150));
+          return ((item.song_name.indexOf(lowercaseQuery) >= 0 && parseInt(item.gap_shows) <= 100));
         }
         else{
           return item.song_name.indexOf(lowercaseQuery) >= 0
@@ -422,6 +492,8 @@ $scope.init = function () {
     // get showid 
     //new game key
         var getShowIdRef = firebase.database().ref("/gameshow/" + game + "/");
+        var getShowScoringRef = firebase.database().ref("/scoring/");
+        $scope.scoring = $firebaseObject(getShowScoringRef);
         $scope.showidnew = $firebaseObject(getShowIdRef);  
         $scope.showidnew.$loaded().then(function(x) {
           bindSongs($scope.uid, $scope.showidnew.showid);

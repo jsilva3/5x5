@@ -54,22 +54,32 @@ function loadGameCount(showid) {
       $scope.selectedItem;
       $scope.getSelectedText = function() {
         if ($scope.selectedItem !== undefined) {
-          console.log ("You have selected: Item " + $scope.selectedItem);
+          //console.log ("You have selected: Item " + $scope.selectedItem);
           $scope.gameCount = loadGameCount($scope.selectedItem);
           var songsRef = firebase.database().ref("picks/" + $scope.selectedItem);
           var songObj = {};
-          // = $firebaseArray(songsRef);
+          var arr = [];
+          var tempObj = {};
             songsRef
               .on("value", function(snapshot) {
               angular.forEach(snapshot.val(),function(picks,key){    
               if (!(picks.song in songObj)) {
                 songObj[picks.song] = 0;
               }
+              tempObj = {key:picks.song,value:1,played:false}
                 songObj[picks.song]++;
+                
+                if (picks.played === true) {
+                  tempObj = {key:picks.song,value:1,played:true}
+                  console.log("played")
+                };
+              arr.push(tempObj);
               });
             });
+          console.log(arr);
           var sortedSongs = sortObject(songObj);
           $scope.songs = sortedSongs;
+          //console.log ($scope.songs);
           $scope.songs.sum = sum(sortedSongs);
           $scope.songs.games = Math.round($scope.songs.sum.value / 5);
           //console.log($scope.songs);

@@ -1,4 +1,4 @@
-{
+{"rules":{
   ".read": true,
   ".write": true,
   "picks": {
@@ -23,4 +23,4 @@
   "gameshow": {
     ".indexOn": ["showid"]
   }
-}
+}}
