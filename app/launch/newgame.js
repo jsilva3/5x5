@@ -14,7 +14,7 @@ angular.module('myApp.newgame', ['ngRoute','firebase'])
 
 function newGameCtrl($timeout, $q, $scope, $location, $firebaseArray,$firebaseObject,$mdToast) {
     var self = this;
-    $scope.imagePath = "img/cardHeader3.jpg";
+    $scope.imagePath = "img/cardHeader5for5.png";
     $scope.imageBetaPath = "img/betabadge2.svg";
     $scope.imageCopyPath = "img/contentcopy.svg";
     $scope.test = 1;

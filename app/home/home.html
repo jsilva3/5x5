@@ -45,7 +45,7 @@
               Picks for:
               <br>{{showDetails.date_text}}
               <br>@ {{showDetails.venue}}</div>
-              <div md-colors="::{backgroundColor: 'default-primary-200'}">&nbsp</div>
+              <div class ="myBar" md-colors="::{backgroundColor: 'default-primary-200'}">&nbsp</div>
             </div>
             <md-card-content class = "card2">
 
@@ -73,22 +73,22 @@
         <md-item-template class = "item-template">
           <span class="item-title">
             <strong>
-            <span ng-if="item.frequency=='low'"><i class="material-icons md-18 lowColor note">music_note</i>+{{scoring.low}}</span>
+            <span ng-if="item.frequency=='low'"><i class="material-icons md-18 highColor note">music_note</i>+{{scoring.low}}</span>
             <span ng-if="item.frequency=='med'"><i class="material-icons md-18 medColor note">music_note</i>+{{scoring.med}}</span>
-            <span ng-if="item.frequency=='high'"><i class="material-icons md-18 highColor note">music_note</i>+{{scoring.high}}</span>
+            <span ng-if="item.frequency=='high'"><i class="material-icons md-18 lowColor note">music_note</i>+{{scoring.high}}</span>
             </strong>
             <span class="overflow-ellipsis"> {{item.song_name_display}} </span>
           </span>
 
           <span class="item-metadata">
             <span class="item-metastat" ng-if="item.trend=='up'">
-              <strong><i class="material-icons md-18 lowColor trend">trending_up</i></strong>
+              <strong><i class="material-icons md-18 highColor trend">trending_up</i></strong>
             </span>
             <span class="item-metastat" ng-if="item.trend=='even'">
               <strong><i class="material-icons md-18 medColor trend">trending_flat</i></strong>
             </span>
             <span class="item-metastat" ng-if="item.trend=='down'">
-              <strong><i class="material-icons md-18 highColor trend">trending_down</i></strong>
+              <strong><i class="material-icons md-18 lowColor trend">trending_down</i></strong>
             </span>
             <span class="item-metastat">
               <strong>{{item.gap_shows}}</strong> show gap
@@ -105,7 +105,7 @@
       </md-autocomplete>
           </div>
           <div>
-          <md-button class="md-raised md-accent md-hue-2" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.song_name_display, ctrl.selectedItem.frequency)">Add to List</md-button>
+          <md-button class="md-raised md-accent md-hue-2" type="submit" value="add" ng-click="ctrl.songPicks.addPick(ctrl.selectedItem.song_name_display, ctrl.selectedItem.frequency)">Add Song</md-button>
           </div>
           </div>
           <br/>
@@ -134,8 +134,11 @@
           <md-chips class = "custom-chips" md-max-chips="5" ng-model="myPicks" readonly="showDetails.started" md-on-remove="ctrl.removeChipFire($chip, $index)">
            <input disabled/>
             <md-chip-template ng-class="{'played': $chip.played}" my-chip class="fade">
-            <em >{{$chip.song}} (+{{$chip.points}})</em>
+             <em>+{{$chip.points}} {{$chip.song}}</em>
             </md-chip-template>
+            <button md-chip-remove class="md-primary songchip">
+              <i class="material-icons">close</i>
+            </button>
           </md-chips>
         </md-card-content>
       </md-card>
@@ -154,7 +157,7 @@
           <md-chips ng-model="item.picks" readonly=true>
            <input disabled />
             <md-chip-template ng-class="{'played': $chip.played, 'hidetext': showDetails.started}" my-chip my-chip-hide >
-            <em >{{$chip.song}} (+{{$chip.points}})</em>
+            <em>+{{$chip.points}} {{$chip.song}}</em>
             </md-chip-template>
           </md-chips>
         </md-card-content>

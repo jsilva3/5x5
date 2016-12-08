@@ -10,6 +10,7 @@
 }
 .md-scroll-mask { position: initial;}
 
+
 md-chip.ng-scope._played {
   background: #1DE9B6 !important;
 }
@@ -24,14 +25,22 @@ md-chip.ng-scope._hidetext {
 md-select {
 min-width:100px;
 }
-
+.myBar {
+  position: relative;
+  top: -4px;
+}
 .style3 {
 	border-top: 1px dashed #1DE9B6;
 }
-md-button {
+.md-button.md-raised {
+  position: relative;
   text-align: center;
+  height: 39px;
+  bottom: -6px;
 }
-.material-icons {
+
+
+.material-icons.general {
   position: relative; 
   right: 0px; 
   bottom: -6px;
@@ -121,7 +130,7 @@ md-input-container {
   }
 .autocomplete-custom-template li:last-child {
   border-bottom-width: 0;
-  height: 62px;
+  height: 56px;
  }
 .autocomplete-custom-template .item-title,
 .autocomplete-custom-template .item-metadata {
@@ -199,8 +208,9 @@ md-card .md-card-image {
 }
 
 .cardheader {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+
 }
 .cardheaderNewGame {
   padding-top: 12px;
@@ -273,29 +283,47 @@ md-card .md-card-image {
     }
 }
 
-.custom-chips md-chips-wrap.md-removable md-chip md-chip-template {
-  padding-right: 5px; }
+
 .md-chips .md-chip-input-container {
   width: 0px;
 }
 
-.md-chip.ng-enter {
-    -webkit-animation-name: zoomIn;
-    animation-name: zoomIn;
-    
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation: zoomIn 1s;
-    animation: zoomIn 1s;
-}
+.errors {
+  font-size: 12px;
+  color: #FFAB00;
+  margin-top: 10px; }
+.custom-chips md-chip {
+  position: relative; }
+.custom-chips md-chip .md-chip-remove-container button.songchip {
+      position: relative;
+      top: 4px;
+      left: -4px;
+      height: 24px;
+      width: 24px;
+      line-height: 30px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 50%;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+      transition: background 0.15s linear;
+      display: block; }
+.custom-chips md-chip .md-chip-remove-container button.songchip md-icon {
+        position: absolute;
 
-.md-chip.ng-leave {
-    -webkit-animation-name: zoomOut;
-    animation-name: zoomOut;
-    
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-}
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0) scale(0.7);
+        color: white;
+        fill: white; }
+
+.custom-chips md-chip .md-chip-remove-container button.songchip:hover, .custom-chips md-chip .md-chip-remove-container button.songchip:focus {
+        background: rgba(255, 171, 0, 0.8); }
+
+.custom-chips md-chips-wrap.md-removable md-chip md-chip-template {
+  padding-right: 8px; }
 
 
 

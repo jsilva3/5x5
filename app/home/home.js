@@ -42,7 +42,7 @@ function HomeCtrl ($timeout, $q, $log, $location, $scope, $rootScope, $firebaseA
     console.log("error, no game id")
   };
 
-    $scope.imagePath = "img/cardHeader3.jpg";
+    $scope.imagePath = "img/cardHeader5for5.png";
     $scope.imageBetaPath = "img/betabadge2.svg";
     //var showid = "20160622";
     var self = this;

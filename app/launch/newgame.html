@@ -43,13 +43,13 @@
             <md-card-content>
                 <div layout = "column" layout-align ="center center">
                     <div class = "newgame">
-                <md-button class="md-raised md-accent md-hue-2" type="submit" ng-click='ctrl.newGame(nextShow[0].showid)'><i class="material-icons">open_in_new</i> Launch New Game</md-button>
+                <md-button class="md-raised md-accent md-hue-2" type="submit" ng-click='ctrl.newGame(nextShow[0].showid)'><i class="material-icons general">open_in_new</i> Launch New Game</md-button>
                 </div> 
                 <div>
                   <span class = "md-title">-OR-</span>
                 </div>                        
                 <div class = "newgame">
-                   <md-button class="md-raised md-accent md-hue-2" type="submit" ng-click="ctrl.gotoGame(ctrl.userGame)"><i class="material-icons">games</i> Join Game</md-button>
+                   <md-button class="md-raised md-accent md-hue-2" type="submit" ng-click="ctrl.gotoGame(ctrl.userGame)"><i class="material-icons general">games</i> Join Game</md-button>
                   <md-input-container>
                   <label>Your Games</label>
                    <md-select ng-model="ctrl.userGame">
@@ -77,7 +77,7 @@
               <span class = "md-title">Directions:</span> Start a new game, make your picks, and then send the link your friends.  Use this button <img ng-src="{{imageCopyPath}}" height="16" class="imagecopy"> on the picks page to copy the link. 
                   Games can be created 24 hrs before the show starts. Create up to 8 games for every two shows. 
               <hr class="style3">
-              <span class = "md-title">Win:</span> Score the highest and try to go <b>5 for 5!</b> 
+              <span class = "md-title">Win:</span>Picking rare songs scores more points. Score the highest and try to go <b>5 for 5!</b> 
             </md-card-content>
         <md-card-footer>
            <hr class="style3">
