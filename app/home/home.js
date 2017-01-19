@@ -43,7 +43,7 @@ function HomeCtrl ($timeout, $q, $log, $location, $scope, $rootScope, $firebaseA
   };
 
     $scope.imagePath = "img/cardHeader5for5.png";
-    $scope.imageBetaPath = "img/betabadge2.svg";
+    $scope.imageBetaPath = "img/betabadge5.svg";
     //var showid = "20160622";
     var self = this;
    // $scope.songData = [];
@@ -130,6 +130,15 @@ function myLoad(){
       //var aScore = lookupScore(frequency);
       if (pick) {
         addSongFire(pick, $scope.uid,lookupPoints(frequency));
+          if (pick == "Auld Lang Syne") {
+             $scope.showSimpleToast("Weaksauce song pick doot! Only worth 1pt.");
+          };
+          if (pick == "Maze") {
+             $scope.showSimpleToast("These violent delights have violent ends ;-)");
+          };
+          if (pick == "Daniel Saw the Stone") {
+             $scope.showSimpleToast("FALSE! - Daniel Saw a Pita Chip");
+          };
       };
       self.clear();
     };
@@ -172,17 +181,6 @@ function myLoad(){
       self.searchText = "";
     };
 
-//replaced by code based on ref(shows)
-//function picksActive() {
-//  if ($scope.showidnew.time < Date.now()) {
-// /   //show has started
-//    self.readonly = true;
-//    $scope.hideText = false;  
-//  }else{
-//    //show has not started
-//    self.readonly = false; 
-//    $scope.hideText = true; 
-//}};
 
 //self.bindSongs = bindSongs;
  function bindSongs(uid, showid){

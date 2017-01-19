@@ -42,8 +42,8 @@ config(['$routeProvider', '$locationProvider', function($routeProvider, $locatio
 })
 .config(function($mdThemingProvider) {
    $mdThemingProvider.theme('default')
-    .primaryPalette('blue-grey')
-    .accentPalette('teal');
+    .primaryPalette('blue')
+    .accentPalette('pink');
   $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
 
 });
