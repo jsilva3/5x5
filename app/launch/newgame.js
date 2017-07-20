@@ -28,7 +28,7 @@ function getNextShow(uid) {
            var tempObj = {};  
            var uid = uid;
            //console.log (Date.now());
-  var nextShowRef = firebase.database().ref("/shows/").orderByChild("time").startAt(Date.now()).limitToFirst(2);
+  var nextShowRef = firebase.database().ref("/shows/").orderByChild("time").startAt(Date.now()).limitToFirst(3);
   $scope.nextShow = $firebaseArray(nextShowRef);  
   $scope.nextShow.$loaded().then(function(x) {
   console.log("Success");

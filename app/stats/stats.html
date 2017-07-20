@@ -17,8 +17,16 @@
     <div ng-controller="statsCtrl as ctrl" data-ng-init="init()" ng-cloak="">
     <div>
     <md-content layout-padding>
+
       <div class = "card1">
         <div layout="column">
+            <md-card layout-padding>
+                <md-card-content>
+                    Tweet Scraper Alive2: {{alive[1].timehuman}}
+                    <br>
+                    DB Maintenance Alive: {{alive[0].timehuman}}
+                </md-card-content>
+            </md-card>
           <md-card layout-padding> 
         <md-input-container>
             <label>Shows</label>
