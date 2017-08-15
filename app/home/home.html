@@ -9,11 +9,12 @@
  
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-
     
 </head>
  
 <body>
+  <div id="container">
+  <canvas id="confetti" width="200px" height = "200px"></canvas>
 <div ng-controller="HomeCtrl as ctrl" data-ng-init="init()" ng-cloak="">
   <md-content>
     <md-toolbar>
@@ -28,7 +29,7 @@
         
       </div>
       <div>
-       <md-button class="md-icon-button" clipboard supported="copySupported" text="copyTextToCopy"" on-copied="copySuccess()" on-error="copyFail(err)">
+       <md-button class="md-icon-button" clipboard supported="copySupported" text="copyTextToCopy" on-copied="copySuccess()" on-error="copyFail(err)">
        <md-icon md-font-icon="material-icons">content_copy</md-icon>
        </md-button>
       </div>
@@ -167,7 +168,6 @@
     </div> 
   </md-content>
 </div>
-
-   
+  </div>
 </body>
 </html>

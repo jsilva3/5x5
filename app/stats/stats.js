@@ -22,16 +22,10 @@
       var query = playedRef
       return $firebaseArray(playedRef)
     };
-    //load alive times
-    function loadAlive() {
-      var tempObj = {};
-      var aliveRef = firebase.database().ref("admin/alive/");
-      var query = aliveRef
-      return $firebaseArray(aliveRef)
-    };
+
 
     $scope.played = loadPlayed();
-    $scope.alive = loadAlive();
+
 
     function loadSongs(showid) {
       var songsRef = firebase.database().ref("picks/" + showid);

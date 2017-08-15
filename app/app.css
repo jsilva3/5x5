@@ -324,6 +324,17 @@ md-card .md-card-image {
 .custom-chips md-chips-wrap.md-removable md-chip md-chip-template {
   padding-right: 8px; }
 
+#container {
+  position: relative;
+}
+#container canvas, #overlay {
+  position: absolute;
+   display:block;
+   z-index:1;
+
+  
+}
+
 
 
 
